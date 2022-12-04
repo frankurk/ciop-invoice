@@ -1,7 +1,11 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
+import Modal from 'react-modal';
+Modal.setAppElement("#__next");
 
 const InvoiceNumber = () => {
     const [invoiceNumber, setInvoiceNumber] = useState(null);
+    const [modalIsOpen, setIsOpen] = useState(false);
+
 
     const handleChange = (e) => {
         setInvoiceNumber(e.target.value);
@@ -13,14 +17,12 @@ const InvoiceNumber = () => {
         closeModal();
     };
 
-    const modalRef = useRef(null);
-
     const openModal = () => {
-        modalRef.current.showModal();
+        setIsOpen(true);
     }
 
     const closeModal = () => {
-        modalRef.current.close();
+        setIsOpen(false);
     }
 
     return (
@@ -28,7 +30,13 @@ const InvoiceNumber = () => {
             <p className="text-lg text-slate-600 mr-2">Próximo correlativo:</p>
             <p className="text-lg text-slate-600 mr-2">{invoiceNumber}</p>
             <button onClick={openModal} className="font-bold text-lg text-teal-500">Cambiar...</button>
-        </div><dialog ref={modalRef}>
+        </div><Modal
+            className="absolute w-2/5 p-8 rounded-lg after:bg-gray-700 ml-[30%] mt-36 z-50 bg-white border"
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            contentLabel="Example Modal"
+            style={{ overlay: { backgroundColor: "rgba(9, 9, 14, 0.6)" } }}
+        >
                 <form onSubmit={handleSubmit} className="flex flex-col w-[300px]">
                     <h2 className="text-lg font-bold text-slate-600 mb-2">Cambiar próximo correlativo</h2>
                     <p className="text-sm font-bold text-slate-600 mb-2">Correlativo:</p>
@@ -39,7 +47,7 @@ const InvoiceNumber = () => {
                         <button type="submit" className="text-teal-500 font-bold">OK</button>
                     </div>
                 </form>
-            </dialog></>
+            </Modal></>
     )
 }
 
