@@ -2,6 +2,7 @@ import { useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import data from "../data/partners";
+import InvoiceNumber from "../components/InvoiceNumber";
 
 const Home = () => {
 
@@ -14,11 +15,7 @@ const Home = () => {
                 <p className="text-2xl font-bold text-slate-600 mb-6">
                     Generar Invoice
                 </p>
-                <div className="flex flex-row">
-                    <p className="text-lg font-bold text-slate-600 mr-2">Próximo correlativo:</p>
-                    <p className="text-lg text-slate-600 mr-2">789</p>
-                    <p className="text-sm text-teal-500">Cambiar...</p>
-                </div>
+                <InvoiceNumber />
             </div>
             <div className="flex w-full justify-center p-12">
                 <table className="w-full border-separate border-spacing-y-8">
