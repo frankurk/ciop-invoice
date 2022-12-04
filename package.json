@@ -1,0 +1,32 @@
+{
+  "name": "ciop-invoice",
+  "productName": "Opticas de Chile Invoice",
+  "version": "1.0.0",
+  "private": true,
+  "main": "main/index.js",
+  "scripts": {
+    "clean": "rimraf dist renderer/.next renderer/out",
+    "start": "electron .",
+    "build": "next build renderer && next export renderer",
+    "pack-app": "npm run build && electron-builder --dir",
+    "dist": "npm run build && electron-builder"
+  },
+  "build": {
+    "asar": true,
+    "files": [
+      "main",
+      "renderer/out"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^22.0.0",
+    "electron-builder": "^23.6.0",
+    "next": "latest",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "electron-is-dev": "^2.0.0",
+    "electron-next": "^3.1.5"
+  }
+}
