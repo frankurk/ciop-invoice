@@ -5,5 +5,6 @@ contextBridge.exposeInMainWorld('electron', {
     send: (payload) => ipcRenderer.send('message', payload),
     on: (handler) => ipcRenderer.on('message', handler),
     off: (handler) => ipcRenderer.off('message', handler),
+    updateCorrelative: (number) => ipcRenderer.invoke('update-correlative', number),
   },
 })

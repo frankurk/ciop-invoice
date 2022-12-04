@@ -1,6 +1,5 @@
 // Native
 const { join } = require('path')
-const { format } = require('url')
 
 // Packages
 const { BrowserWindow, app, ipcMain } = require('electron')
@@ -8,6 +7,7 @@ const isDev = require('electron-is-dev')
 const prepareNext = require('electron-next')
 
 const invoiceHandler = require('./lib/invoice')
+const db = require('./db')
 
 // Prepare the renderer once the app is ready
 app.on('ready', async () => {
@@ -43,4 +43,10 @@ ipcMain.on('message', async (event, message) => {
     mime: 'application/pdf',
   }
   event.sender.send('message', JSON.stringify(data))
+})
+
+// listen the channel `message` and resend the received message to the renderer process
+ipcMain.handle('update-correlative', async (_event, message) => {
+  await db.invoiceGeneration.deleteMany();
+  await db.invoiceGeneration.insertOne({ targetNumber: Number.parseInt(message, 10) });
 })

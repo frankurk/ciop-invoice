@@ -7,8 +7,9 @@ const InvoiceNumber = () => {
         setInvoiceNumber(e.target.value);
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        await window.electron.message.updateCorrelative(invoiceNumber);
         closeModal();
     };
 
