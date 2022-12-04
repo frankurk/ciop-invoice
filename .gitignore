@@ -38,3 +38,4 @@ next-env.d.ts
 .next/
 renderer/out/
 dist/
+data/

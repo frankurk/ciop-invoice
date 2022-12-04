@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <title>NOTA DE COBRO N° {{invoice.number}} - ASOCIACIÓN GREMIAL DE LA INDUSTRIA ÓPTICA DE CHILE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Source Sans Pro', sans-serif;
+      src: local();
+    }
+
+    .clearfix:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    a {
+      color: #009d9f;
+      text-decoration: none;
+    }
+
+    body {
+      position: relative;
+      width: 21cm;
+      height: 29.7cm;
+      margin: 0 auto;
+      color: #555555;
+      background: #FFFFFF;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-family: 'Source Sans Pro', sans-serif;
+    }
+
+    header {
+      padding: 10px 0;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #AAAAAA;
+    }
+
+    #logo {
+      float: left;
+    }
+
+    #logo svg {
+      height: 70px;
+    }
+
+    #company {
+      float: right;
+      text-align: right;
+    }
+
+
+    #details {
+      margin-bottom: 50px;
+    }
+
+    #client {
+      padding-left: 6px;
+      border-left: 6px solid #009d9f;
+      float: left;
+    }
+
+    #client .to {
+      color: #777777;
+    }
+
+    h2.name {
+      font-size: 1.4em;
+      font-weight: normal;
+      margin: 0;
+    }
+
+    #invoice {
+      float: right;
+      text-align: right;
+    }
+
+    #invoice h1 {
+      color: #172e3d;
+      font-size: 2.4em;
+      line-height: 1em;
+      font-weight: normal;
+      margin: 0 0 10px 0;
+    }
+
+    #invoice .date {
+      font-size: 1.1em;
+      color: #777777;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border-spacing: 0;
+      margin-bottom: 20px;
+    }
+
+    table th,
+    table td {
+      padding: 20px;
+      background: #EEEEEE;
+      text-align: right;
+      border-bottom: 1px solid #FFFFFF;
+    }
+
+    table th {
+      white-space: nowrap;
+      font-weight: normal;
+    }
+
+    table td {
+      text-align: right;
+    }
+
+    table td h3 {
+      color: #172e3d;
+      font-size: 1.2em;
+      font-weight: normal;
+      margin: 0 0 0.2em 0;
+    }
+
+    table .desc {
+      text-align: left;
+    }
+
+    table td.unit,
+    table td.total {
+      font-size: 1.2em;
+    }
+
+    table tbody tr:last-child td {
+      border: none;
+    }
+
+    table tfoot td {
+      padding: 10px 20px;
+      background: #FFFFFF;
+      border-bottom: none;
+      font-size: 1.2em;
+      white-space: nowrap;
+      border-top: 1px solid #AAAAAA;
+    }
+
+    table tfoot tr:first-child td {
+      border-top: none;
+    }
+
+    table tfoot tr:last-child td {
+      color: #172e3d;
+      font-size: 1.4em;
+      border-top: 1px solid #172e3d;
+
+    }
+
+    table tfoot tr td:first-child {
+      border: none;
+    }
+
+    #notices {
+      padding-left: 6px;
+      border-left: 6px solid #009d9f;
+    }
+
+    #notices .notice {
+      font-size: 1.2em;
+    }
+
+    footer {
+      color: #777777;
+      width: 100%;
+      height: 30px;
+      position: absolute;
+      bottom: 0;
+      border-top: 1px solid #AAAAAA;
+      padding: 8px 0;
+      text-align: center;
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="clearfix">
+    <div id="logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 463.49 772.48">
+        <path fill="#172e3d"
+          d="M107.51 82.31a104.87 104.87 0 0 1 41.84 8.4 107.42 107.42 0 0 1 57.1 57.1 104.84 104.84 0 0 1 8.4 41.84 103.57 103.57 0 0 1-8.4 41.67 107.78 107.78 0 0 1-57.1 56.93 104.71 104.71 0 0 1-41.84 8.41 103.41 103.41 0 0 1-41.67-8.41 108.24 108.24 0 0 1-56.93-56.93 103.4 103.4 0 0 1-8.4-41.67 104.67 104.67 0 0 1 8.4-41.84 107.87 107.87 0 0 1 56.93-57.1 103.57 103.57 0 0 1 41.67-8.4Zm0 171.48a63.05 63.05 0 0 0 25-5 64 64 0 0 0 20.41-13.72 66.58 66.58 0 0 0 13.89-20.4 63.56 63.56 0 0 0 0-50.08 66.13 66.13 0 0 0-34.3-34.29 63.42 63.42 0 0 0-50.07 0 66.58 66.58 0 0 0-20.37 13.88 64.18 64.18 0 0 0-13.72 20.4 65.56 65.56 0 0 0 0 50.08 64 64 0 0 0 34.12 34.12 63.06 63.06 0 0 0 25.04 5.01Zm33.61-231.85L97.91 69.27l-24-21.94L117.12 0Zm108.02 231.85h42.87V125.18h-42.87V82.31h149.88a61.3 61.3 0 0 1 25 5.14 66.1 66.1 0 0 1 34.3 34.3 63.54 63.54 0 0 1 0 50.07 66.47 66.47 0 0 1-13.86 20.36 64 64 0 0 1-20.41 13.72 63.05 63.05 0 0 1-25 5h-64.17v42.87h42.87v42.87H249.14Zm85.74-85.74h64.14a21.11 21.11 0 0 0 15.26-6.18 20.26 20.26 0 0 0 6.34-15.09 21.66 21.66 0 0 0-21.6-21.6h-64.14ZM0 345.6h157.07v62.83h-31.41v-31.41H94.25v94.24h31.41v31.41H31.42v-31.41h31.41v-94.24H31.42v31.41H0Zm183.71 0h92.73v31.42h-31.66v94.24h31.66v31.41h-92.73v-31.41h29.65v-94.24h-29.65Zm194.49 0a76.43 76.43 0 0 1 47.25 15.84V345.6h31.41v62.83h-34.15a46.67 46.67 0 0 0-44.51-31.41 44.79 44.79 0 0 0-18.34 3.77 48.67 48.67 0 0 0-15 10.18 47.07 47.07 0 0 0-10.05 14.95 48 48 0 0 0 0 36.69 46.86 46.86 0 0 0 25 25 46.22 46.22 0 0 0 18.39 3.65 46.67 46.67 0 0 0 44.49-31.41h32.67a76.81 76.81 0 0 1-9.8 25 79.88 79.88 0 0 1-17.22 19.85 78.89 78.89 0 0 1-23 13.2 77.15 77.15 0 0 1-27.14 4.77 75.78 75.78 0 0 1-30.53-6.15 79.38 79.38 0 0 1-41.72-41.72 75.79 75.79 0 0 1-6.16-30.53 76.77 76.77 0 0 1 6.16-30.67 79.06 79.06 0 0 1 41.72-41.84 76 76 0 0 1 30.53-6.16ZM3.67 625.87h9.71l9.56-59.69h-9.56v-19.94h79.64v19.94h-9.4l9.4 59.72h10.18v19.88H63.39v-19.91h9.56l-3.19-19.9h-33l-3.18 19.9h9.87v19.91H3.67Zm62.91-39.81-3.19-19.88H43.01l-3 19.91Zm135.06 2.39a30.74 30.74 0 0 1 15.92 15.92 29.49 29.49 0 0 1 0 23.26 30.82 30.82 0 0 1-6.45 9.47 29.86 29.86 0 0 1-9.47 6.37 29.37 29.37 0 0 1-11.63 2.31H150.2a29.34 29.34 0 0 1-11.63-2.31 29.71 29.71 0 0 1-15.84-15.84 29.34 29.34 0 0 1-2.31-11.63h19.91a9.78 9.78 0 0 0 9.87 9.87h39.82a9.81 9.81 0 0 0 7.09-2.86 9.42 9.42 0 0 0 2.94-7 10 10 0 0 0-10-10H150.2a29.34 29.34 0 0 1-11.63-2.31 29.69 29.69 0 0 1-15.84-15.85 30.41 30.41 0 0 1 0-23.25 29.79 29.79 0 0 1 6.37-9.48 30.94 30.94 0 0 1 9.47-6.45 28.38 28.38 0 0 1 11.63-2.43h39.82a28.41 28.41 0 0 1 11.63 2.39 30.71 30.71 0 0 1 15.92 15.93 28.5 28.5 0 0 1 2.38 11.62h-19.91a10 10 0 0 0-10-10H150.2a9.4 9.4 0 0 0-7 2.94 9.78 9.78 0 0 0-2.87 7.09 9.8 9.8 0 0 0 9.87 9.88h39.82a28.41 28.41 0 0 1 11.62 2.36Z" />
+        <path fill="#b4b4b4"
+          d="M258.49 566.18h-19.9v-19.94h49.69a48.69 48.69 0 0 1 19.43 3.9 49.83 49.83 0 0 1 26.49 26.52 48.69 48.69 0 0 1 3.9 19.43 48.14 48.14 0 0 1-3.9 19.35 50 50 0 0 1-26.52 26.44 48.69 48.69 0 0 1-19.43 3.9h-49.66v-19.91h19.9Zm19.91 0v59.72h9.88a29.12 29.12 0 0 0 11.62-2.31 29.63 29.63 0 0 0 9.48-6.37 30.7 30.7 0 0 0 6.45-9.47 29.49 29.49 0 0 0 0-23.26 30.71 30.71 0 0 0-15.93-15.92 28.33 28.33 0 0 0-11.62-2.39Zm78.52-19.94h99.54v39.82h-19.91v-19.88h-39.81v19.91h19.91V606h-19.91v19.9h39.81V606h19.91v39.78h-99.54v-19.91h19.91v-59.69h-19.91ZM43.99 687.1a41.57 41.57 0 0 1 25.67 8.61v-8.61h17.08v34.15H68.2a25.37 25.37 0 0 0-24.21-17.07 24.39 24.39 0 0 0-10 2 26.45 26.45 0 0 0-8.12 5.53 25.37 25.37 0 0 0-5.47 8.13 26.09 26.09 0 0 0 0 19.94 25.58 25.58 0 0 0 13.59 13.59 25.18 25.18 0 0 0 10 2 25.37 25.37 0 0 0 24.21-17.04h17.76a41.83 41.83 0 0 1-5.33 13.59 43.47 43.47 0 0 1-9.43 10.79 42.91 42.91 0 0 1-12.49 7.17 42 42 0 0 1-14.75 2.59 41.24 41.24 0 0 1-16.6-3.34 43.25 43.25 0 0 1-22.68-22.68 41.22 41.22 0 0 1-3.34-16.59 41.78 41.78 0 0 1 3.37-16.68 43 43 0 0 1 22.68-22.74 41.24 41.24 0 0 1 16.6-3.34Zm59.41 0h34.15v17.08h-8.61v17.07h34v-17.07h-8.33V687.1h34.15v17.08h-8.75v51.22h8.75v17.07h-34.14V755.4h8.33v-17.07h-34v17.07h8.61v17.07H103.4V755.4h8.47v-51.22h-8.47Zm102.58 0h50.4v17.08H239.2v51.22h17.21v17.07h-50.4V755.4h16.11v-51.22h-16.14Zm65.01 68.3h17.08v-51.22h-17.08V687.1h51.21v17.08h-17.06v51.22h34.15v-17.07h17.07v34.14h-85.37Zm99.21-68.3h85.36v34.15h-17.11v-17.07H404.3v17.07h17.08v17.08H404.3v17.07h34.15v-17.07h17.07v34.14H370.2V755.4h17v-51.22h-17Z" />
+      </svg>
+    </div>
+    <div id="company">
+      <h2 class="name">ASOCIACIÓN GREMIAL DE LA INDUSTRIA ÓPTICA DE CHILE A.G.</h2>
+      <div>65.144.839-5</div>
+      <div><a href="mailto:finanzas@ciop.cl">finanzas@ciop.cl</a></div>
+    </div>
+    </div>
+  </header>
+  <main>
+    <div id="details" class="clearfix">
+      <div id="client">
+        <div class="to">SOCIO:</div>
+        <h2 class="name">{{partner.name}}</h2>
+        <div class="address">{{partner.address}}</div>
+        <div class="address">{{partner.region}}</div>
+        <div class="rut">{{partner.rut}}</div>
+      </div>
+      <div id="invoice">
+        <h1>NOTA DE COBRO N° {{invoice.number}}</h1>
+        <div class="date">Fecha: {{invoice.date}}</div>
+      </div>
+    </div>
+    <table border="0" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr>
+          <th class="desc" colspan="3">DESCRIPCIÓN</th>
+          <th class="unit">VALOR UF</th>
+          <th class="total">VALOR CLP</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each invoice.details}}
+        <tr>
+          <td class="desc" colspan="3">
+            <h3>{{this.mainText}}</h3>{{this.description}}
+          </td>
+          <td class="unit">{{this.amountInUf}}</td>
+          <td class="total">${{this.amountInClp}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2"></td>
+          <td colspan="2">SUBTOTAL</td>
+          <td>${{invoice.subtotal}}</td>
+        </tr>
+        <tr>
+          <td colspan="2"></td>
+          <td colspan="2">SALDO ANTERIOR</td>
+          <td>${{invoice.previousBalance}}</td>
+        </tr>
+        <tr>
+          <td colspan="2"></td>
+          <td colspan="2">TOTAL</td>
+          <td>${{invoice.totalToPay}}</td>
+        </tr>
+      </tfoot>
+    </table>
+    <div id="notices">
+      <div>TRANSFERIR A:</div>
+      <div class="notice">Banco Santander</div>
+      <div class="notice">0-000-7184229-0</div>
+
+      <div class="notice">ASOC GREMIAL DE LA IND. OPTICA DE CHILE</div>
+      <div class="notice">65.144.839-5</div>
+    </div>
+  </main>
+  <footer>
+    La presente nota de cobro ha sido generada con la UF valorada en ${{invoice.ufValue}} al 01 de {{invoice.writtenMonth}} de {{invoice.year}}
+  </footer>
+</body>
+
+</html>

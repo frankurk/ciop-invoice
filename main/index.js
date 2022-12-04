@@ -7,6 +7,8 @@ const { BrowserWindow, app, ipcMain } = require('electron')
 const isDev = require('electron-is-dev')
 const prepareNext = require('electron-next')
 
+const invoiceHandler = require('./lib/invoice')
+
 // Prepare the renderer once the app is ready
 app.on('ready', async () => {
   await prepareNext('./renderer')
@@ -22,11 +24,7 @@ app.on('ready', async () => {
 
   const url = isDev
     ? 'http://localhost:8000'
-    : format({
-        pathname: join(__dirname, '../renderer/out/index.html'),
-        protocol: 'file:',
-        slashes: true,
-      })
+    : new URL('renderer/out/index.html', `file://${__dirname}`).toString()
 
   mainWindow.loadURL(url)
 })
@@ -34,7 +32,15 @@ app.on('ready', async () => {
 // Quit the app once all windows are closed
 app.on('window-all-closed', app.quit)
 
+console.log(process.env.NODE_ENV);
+
 // listen the channel `message` and resend the received message to the renderer process
-ipcMain.on('message', (event, message) => {
-  event.sender.send('message', message)
+ipcMain.on('message', async (event, message) => {
+  const invoice = await invoiceHandler.generateInvoice({ partnerId: '123', previousBalance: 0 });
+
+  const data = {
+    body: Buffer.from(invoice.buffer).toString('base64'),
+    mime: 'application/pdf',
+  }
+  event.sender.send('message', JSON.stringify(data))
 })

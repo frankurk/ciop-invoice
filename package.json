@@ -29,8 +29,12 @@
     "tailwindcss": "^3.2.4"
   },
   "dependencies": {
+    "axios": "^1.2.0",
     "electron-is-dev": "^2.0.0",
     "electron-next": "^3.1.5",
+    "handlebars": "^4.7.7",
+    "nedb-promises": "^6.2.1",
+    "puppeteer": "^19.3.0",
     "react-modal": "^3.16.1"
   }
 }
