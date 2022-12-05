@@ -14,6 +14,10 @@ function upperCaseFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+const sanitizeFilename = (filename) => {
+  return filename.replace(/[^a-z0-9 ]/gi, '');
+}
+
 const getUf = async (date) => {
   const { data } = await axios.get(`https://mindicador.cl/api/uf/${date}`);
   return data.serie[0].valor;
@@ -37,7 +41,7 @@ class InvoiceHandler {
   async generateInvoice({ partnerId, previousBalance = 0 }) {
     const partner = {
       id: "3ef197ba-abf5-4a24-b14a-0c27d90e878c",
-      name: "Microsoft Corporation",
+      name: "Microsoft Corp.",
       address: "1 Apple Loop, California",
       rut: "11.111.111-1",
       commune: {
@@ -125,6 +129,7 @@ class InvoiceHandler {
 
     return {
       buffer: pdf,
+      filename: `${nextNumber - 1} - ${sanitizeFilename(partner.name)}.pdf`,
       number: nextNumber,
     };
   }

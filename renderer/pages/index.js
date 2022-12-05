@@ -19,13 +19,12 @@ const Home = () => {
         setIsOpen(false);
     }
 
-    const downloadPDF = (pdf, number) => {
+    const downloadPDF = (pdf, filename) => {
         const linkSource = `data:application/pdf;base64,${pdf}`;
         const downloadLink = document.createElement("a");
-        const fileName = `${number}-invoice.pdf`;
     
         downloadLink.href = linkSource;
-        downloadLink.download = fileName;
+        downloadLink.download = filename;
         downloadLink.click();
     }
 
@@ -36,7 +35,7 @@ const Home = () => {
         const previousBalance = 0; // TODO: get previousBalance from input
 
         const data = await window.electron.invoice.generateInvoice(partnerId, previousBalance);
-        downloadPDF(Buffer.from(data.buffer).toString('base64'), data.number - 1);
+        downloadPDF(Buffer.from(data.buffer).toString('base64'), data.filename);
         setBackendResponse(data.number);
 
         closeModal();
