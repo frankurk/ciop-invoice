@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Modal from "react-modal";
 Modal.setAppElement("#__next");
 
-const InvoiceNumber = () => {
+const InvoiceNumber = ({refresh}) => {
   const [invoiceNumber, setInvoiceNumber] = useState(null);
   const [newInvoiceNumber, setNewInvoiceNumber] = useState(null);
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -31,7 +31,7 @@ const InvoiceNumber = () => {
       setInvoiceNumber(data);
       setNewInvoiceNumber(data);
     });
-  }, []);
+  }, [refresh]);
 
   return (
     <>
