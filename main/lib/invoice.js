@@ -35,9 +35,26 @@ const getUfCMF = async (year, month, day) => {
 
 class InvoiceHandler {
   async generateInvoice({ partnerId, previousBalance = 0 }) {
-    const partner = await db.partner.findOne({
-      _id: partnerId,
-    });
+    const partner = {
+      id: "3ef197ba-abf5-4a24-b14a-0c27d90e878c",
+      name: "Microsoft Corporation",
+      address: "1 Apple Loop, California",
+      rut: "11.111.111-1",
+      commune: {
+        id: "bd8a66a7-811f-4be1-9a5f-142495e3a3ca",
+        name: "Jamaica",
+        region: {
+          id: "6e4e7ac0-6dee-4049-8bb6-04c6df0e995b",
+          name: "New Orleans",
+        },
+      },
+      subscription: {
+        id: "5b7636cd-5fa7-4525-85de-4f49d3ed794e",
+        price: 75.2,
+        name: "A",
+      },
+    };
+
     const lastInvoiceGeneration = await db.invoiceGeneration.find();
 
     const nextNumber = lastInvoiceGeneration.length
@@ -51,13 +68,14 @@ class InvoiceHandler {
     const YEAR = DATE.getFullYear();
     const FIRST_DAY_OF_MONTH = `01-${pad(MONTH)}-${YEAR}`;
     const FULL_DATE = `${pad(DAY)}-${pad(MONTH)}-${YEAR}`;
-    const ufValue = await getUf(YEAR, MONTH, 1);
+    const ufValue = await getUf(FULL_DATE);
     const currentMonthCostClp = Math.round(
       partner.subscription.price * ufValue
     );
     const totalToPay = Math.round(currentMonthCostClp + previousBalance);
 
-    const html = await fs.readFile("./templates/v1/index.html", 'utf-8');
+    // get it from __dirname
+    const html = await fs.readFile(`${__dirname}/../templates/v1/index.html`, "utf-8");
     const template = compile(html);
 
     const payload = {

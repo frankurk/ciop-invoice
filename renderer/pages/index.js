@@ -18,6 +18,16 @@ const Home = () => {
         setIsOpen(false);
     }
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const partnerId = '1'; // TODO: get partnerId from select
+        const previousBalance = 0; // TODO: get previousBalance from input
+        const data = await window.electron.invoice.generateInvoice(partnerId, previousBalance);
+        console.log(data);
+        closeModal();
+    }
+
     return (
         <>
             <Head>
@@ -62,7 +72,7 @@ const Home = () => {
                 contentLabel="Example Modal"
                 style={{ overlay: { backgroundColor: "rgba(9, 9, 14, 0.6)" } }}
             >
-                <form className="flex flex-col w-[300px]">
+                <form onSubmit={handleSubmit} className="flex flex-col w-[300px]">
                     <h2 className="text-lg font-bold text-slate-600 mb-2">Saldo Anterior</h2>
                     <p className="text-sm font-bold text-slate-600 mb-2">Saldo pendiente:</p>
                     <input type="number" 

@@ -13,12 +13,11 @@ class BrowserRenderer {
     if (!this.browser || !this.browser.isConnected()) await this.init()
 
     try {
-      const context = await this.browser.newContext()
-      const page = await context.newPage()
+      const page = await this.browser.newPage()
       await page.setContent(data.body, { waitUntil: "domcontentloaded" })
       await page.waitForTimeout(1000) // Needs time to fully render... 'domcontentloaded' doesn't seems to help with it
 
-      await page.emulateMedia({ media: data.media || "print" })
+      await page.emulateMediaType(data.media || "print")
 
       const pdf = await page.pdf({
         headerTemplate: data.header ? data.header : "<span></span>",
@@ -42,7 +41,6 @@ class BrowserRenderer {
       })
 
       await page.close()
-      await context.close()
 
       return pdf
     } catch (err) {

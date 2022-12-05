@@ -32,8 +32,6 @@ app.on("ready", async () => {
 // Quit the app once all windows are closed
 app.on("window-all-closed", app.quit);
 
-console.log(process.env.NODE_ENV);
-
 // listen the channel `message` and resend the received message to the renderer process
 ipcMain.on("message", async (event, message) => {
   event.sender.send("message", message);
