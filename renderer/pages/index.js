@@ -9,6 +9,7 @@ Modal.setAppElement("#__next");
 const Home = () => {
 
     const [modalIsOpen, setIsOpen] = useState(false);
+    const [backendResponse, setBackendResponse] = useState(null);
 
     const openModal = () => {
         setIsOpen(true);
@@ -36,6 +37,7 @@ const Home = () => {
 
         const data = await window.electron.invoice.generateInvoice(partnerId, previousBalance);
         downloadPDF(Buffer.from(data.buffer).toString('base64'), data.number - 1);
+        setBackendResponse(data.number);
 
         closeModal();
     }
@@ -49,7 +51,7 @@ const Home = () => {
                 <p className="text-2xl font-bold text-slate-600 mb-6">
                     Generar Invoice
                 </p>
-                <InvoiceNumber />
+                <InvoiceNumber refresh={backendResponse}/>
             </div>
             <div className="flex w-full justify-center p-12">
                 <table className="w-full border-separate border-spacing-y-8">
