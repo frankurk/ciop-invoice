@@ -56,8 +56,5 @@ ipcMain.handle("generate-invoice", async (_event, message) => {
     previousBalance,
   });
 
-  return {
-    body: Buffer.from(invoice.buffer).toString("base64"),
-    mime: "application/pdf",
-  };
+  return invoice;
 });
