@@ -4,15 +4,17 @@ Modal.setAppElement("#__next");
 
 const InvoiceNumber = () => {
   const [invoiceNumber, setInvoiceNumber] = useState(null);
+  const [newInvoiceNumber, setNewInvoiceNumber] = useState(null);
   const [modalIsOpen, setIsOpen] = useState(false);
 
   const handleChange = (e) => {
-    setInvoiceNumber(e.target.value);
+    setNewInvoiceNumber(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await window.electron.invoice.setCorrelative(invoiceNumber);
+    await window.electron.invoice.setCorrelative(newInvoiceNumber);
+    setInvoiceNumber(newInvoiceNumber);
     closeModal();
   };
 
@@ -27,6 +29,7 @@ const InvoiceNumber = () => {
   useEffect(() => {
     window.electron.invoice.getCorrelative().then((data) => {
       setInvoiceNumber(data);
+      setNewInvoiceNumber(data);
     });
   }, []);
 
@@ -53,7 +56,7 @@ const InvoiceNumber = () => {
           <p className="text-sm font-bold text-slate-600 mb-2">Correlativo:</p>
           <input
             type="number"
-            value={invoiceNumber}
+            value={newInvoiceNumber}
             onChange={handleChange}
             className="w-[100px] border-b border-slate-800 outline-none"
           />
