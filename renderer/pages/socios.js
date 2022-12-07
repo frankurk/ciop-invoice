@@ -1,12 +1,19 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import data from "../data/partners";
 
 const Partners = () => {
 
     const [showForm, setShowForm] = useState(false);
+
+    useEffect(() => {
+        window.electron.partner.getLevels().then((data) => {
+            console.log(data);
+            // use data to populate select
+          });
+    }, []);
 
     const closedNewPartnerForm = (
         <div

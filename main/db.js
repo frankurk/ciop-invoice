@@ -9,6 +9,7 @@ const dbFactory = (fileName) =>
   });
 
 const db = {
+  partnerLevel: dbFactory("partner-levels.db"),
   partner: dbFactory("partners.db"),
   invoiceGeneration: dbFactory("invoices.db"),
 };
