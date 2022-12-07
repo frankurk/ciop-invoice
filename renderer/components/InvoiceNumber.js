@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import Modal from "react-modal";
+import Image from "next/image";
 Modal.setAppElement("#__next");
 
-const InvoiceNumber = ({refresh}) => {
+const InvoiceNumber = ({ refresh }) => {
   const [invoiceNumber, setInvoiceNumber] = useState(null);
   const [newInvoiceNumber, setNewInvoiceNumber] = useState(null);
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -36,10 +37,10 @@ const InvoiceNumber = ({refresh}) => {
   return (
     <>
       <div className="flex flex-row">
-        <p className="text-lg text-slate-600 mr-2">Próximo correlativo:</p>
-        <p className="text-lg text-slate-600 mr-2">{invoiceNumber}</p>
-        <button onClick={openModal} className="font-bold text-lg text-teal-500">
-          Cambiar...
+        <p className="text-lg text-slate-600 mr-2 font-bold">Próximo correlativo:</p>
+        <p className="text-lg text-teal-500 font-bold mr-2">{invoiceNumber}</p>
+        <button onClick={openModal}>
+          <Image src="/edit.svg" width="20" height="20" alt="editar" className="mx-4" />
         </button>
       </div>
       <Modal
