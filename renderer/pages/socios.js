@@ -7,12 +7,16 @@ import data from "../data/partners";
 const Partners = () => {
 
     const [showForm, setShowForm] = useState(false);
+    const [levels, setLevels] = useState(null);
+    const [selectedLevel, setSelectedLevel] = useState(null);
+    const [name, setName] = useState(null);
+    const [address, setAddress] = useState(null);
+    const [rut, setRut] = useState(null);
 
     useEffect(() => {
-        window.electron.partner.getLevels().then((data) => {
-            console.log(data);
-            // use data to populate select
-          });
+        window.electron.partner.getLevels().then((levels) => {
+            setLevels(levels);
+        });
     }, []);
 
     const closedNewPartnerForm = (
@@ -23,6 +27,8 @@ const Partners = () => {
             <p className="text-lg text-teal-500 font-bold text-center">Agregar Socio</p>
         </div>
     );
+
+    console.log(selectedLevel);
 
     return (
         <>
@@ -36,30 +42,39 @@ const Partners = () => {
                         <form className="w-[850px] my-5 p-5 rounded-lg border border-gray-500 self-center">
                             <p className="text-lg text-teal-500 font-bold text-center mb-6">Agregar Socio</p>
                             <div className="w-full flex flex-row justify-between">
-                                <label className="text-slate-600 w-[48%]">Nombre:<input text="text"
-                                    className="border bg-transparent w-full outline-slate-600 text-slate-600 font-semibold my-2"
-                                />
+                                <label className="text-slate-600 w-[48%]">
+                                    Nombre:<input onChange={(e) => setName(e.target.value)} value={name} type="text"
+                                        className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2 px-2"
+                                    />
                                 </label>
-                                <label className="text-slate-600 w-[48%]">Dirección:<input text="text"
-                                    className="border bg-transparent w-full outline-slate-600 text-slate-600 font-semibold my-2"
-                                />
+                                <label className="text-slate-600 w-[48%]">
+                                    Dirección:<input onChange={(e) => setAddress(e.target.value)} value={address} type="text"
+                                        className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2 px-2"
+                                    />
                                 </label>
                             </div>
                             <div className="w-full flex flex-row justify-between">
-                                <label className="text-slate-600 w-[22%]">RUT:<input text="text"
-                                    className="border bg-transparent w-full outline-slate-600 text-slate-600 font-semibold my-2"
+                                <label className="text-slate-600 w-[22%]">
+                                    RUT:<input onChange={(e) => setRut(e.target.value)} value={rut} type="text"
+                                        className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2 px-2"
+                                    />
+                                </label>
+                                <label className="text-slate-600 w-[22%]">
+                                    Nivel:<select
+                                        onChange={(e) => setSelectedLevel(e.target.value)}
+                                        value={selectedLevel}
+                                        className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2">
+                                        {levels && levels.map((option) => (
+                                            <option key={option._id}>{option.name}</option>
+                                        ))}
+                                    </select>
+                                </label>
+                                <label className="text-slate-600 w-[22%]">Región:<select
+                                    className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2"
                                 />
                                 </label>
-                                <label className="text-slate-600 w-[22%]">Nivel:<select text="text"
-                                    className="border bg-transparent w-full outline-slate-600 text-slate-600 font-semibold my-2"
-                                />
-                                </label>
-                                <label className="text-slate-600 w-[22%]">Región:<select text="text"
-                                    className="border bg-transparent w-full outline-slate-600 text-slate-600 font-semibold my-2"
-                                />
-                                </label>
-                                <label className="text-slate-600 w-[22%]">Comuna:<select text="text"
-                                    className="border bg-transparent w-full outline-slate-600 text-slate-600 font-semibold my-2"
+                                <label className="text-slate-600 w-[22%]">Comuna:<select
+                                    className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2"
                                 />
                                 </label>
                             </div>
