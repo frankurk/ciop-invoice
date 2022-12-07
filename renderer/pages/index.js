@@ -4,6 +4,7 @@ import Image from "next/image";
 import data from "../data/partners";
 import InvoiceNumber from "../components/InvoiceNumber";
 import Modal from 'react-modal';
+import Link from "next/link";
 Modal.setAppElement("#__next");
 
 const Home = () => {
@@ -22,7 +23,7 @@ const Home = () => {
     const downloadPDF = (pdf, filename) => {
         const linkSource = `data:application/pdf;base64,${pdf}`;
         const downloadLink = document.createElement("a");
-    
+
         downloadLink.href = linkSource;
         downloadLink.download = filename;
         downloadLink.click();
@@ -46,11 +47,12 @@ const Home = () => {
             <Head>
                 <title>Invoice Ópticas de Chile</title>
             </Head>
-            <div className="w-full justify-between items-center p-12">
-                <p className="text-2xl font-bold text-slate-600 mb-6">
-                    Generar Invoice
-                </p>
-                <InvoiceNumber refresh={backendResponse}/>
+            <p className="w-full m-12 text-2xl font-bold text-slate-600 mb-6">
+                Generar Invoice
+            </p>
+            <div className="w-full flex flex-row justify-between px-12 h-10 items-center">
+                <InvoiceNumber refresh={backendResponse} />
+                <Link href="/socios" className="text-teal-500 font-bold outline rounded-md p-2">Administrar Socios</Link>
             </div>
             <div className="flex w-full justify-center p-12">
                 <table className="w-full border-separate border-spacing-y-8">
@@ -66,13 +68,13 @@ const Home = () => {
                     </thead>
                     <tbody className="text-sm">
                         {data.partners.map(partner => (
-                            <tr>
+                            <tr key={partner.id}>
                                 <td className="border-b border-gray-200">{partner.name}</td>
                                 <td className="border-b border-gray-200">{partner.rut}</td>
                                 <td className="border-b border-gray-200">{partner.address}</td>
                                 <td className="border-b border-gray-200">{partner.commune.name}</td>
                                 <td className="border-b border-gray-200">{partner.subscription.name}</td>
-                                <td className="border-b border-gray-200"><button onClick={openModal} ><Image src="/download.svg" width="20" height="20" /></button></td>
+                                <td className="border-b border-gray-200"><button onClick={openModal} ><Image src="/download.svg" width="20" height="20" atl="download" /></button></td>
                             </tr>
                         ))}
                     </tbody>
@@ -88,7 +90,7 @@ const Home = () => {
                 <form onSubmit={handleSubmit} className="flex flex-col w-[300px]">
                     <h2 className="text-lg font-bold text-slate-600 mb-2">Saldo Anterior</h2>
                     <p className="text-sm font-bold text-slate-600 mb-2">Saldo pendiente:</p>
-                    <input type="number" 
+                    <input type="number"
                         className="w-[100px] border-b border-slate-800 outline-none" />
                     <div className="flex flex-row justify-end">
                         <button className="text-slate-400 m-4">Cancelar</button>
