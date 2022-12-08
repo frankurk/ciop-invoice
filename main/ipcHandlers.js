@@ -4,7 +4,7 @@ const invoiceHandler = require("./lib/invoice");
 const db = require("./db");
 
 ipcMain.handle("get-partners", async () => {
-  const partners = await db.partner.find().sort({ createdAt: -1 });
+  const partners = await db.partner.find().sort({ createdAt: 1 });
   for (const partner of partners) {
     const commune = await db.commune.findOne({ _id: partner.communeId });
     const region = await db.region.findOne({ _id: commune.regionId });
@@ -35,8 +35,8 @@ ipcMain.handle("get-partner-levels", async () => {
 ipcMain.handle("new-partner", async (_event, payload) => {
   const partner = await db.partner.insertOne({
     name: payload.name,
-    address: payload.address,
     rut: payload.rut,
+    address: payload.address,
     communeId: payload.communeId,
     levelId: payload.levelId,
   });
