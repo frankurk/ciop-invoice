@@ -3,9 +3,11 @@ const puppeteer = require("puppeteer")
 class BrowserRenderer {
   async init() {
     this.browser = await puppeteer.launch()
+    this.page = await this.browser.newPage()
   }
 
   async close() {
+    await this.page?.close()
     await this.browser?.close()
   }
 
@@ -13,13 +15,10 @@ class BrowserRenderer {
     if (!this.browser || !this.browser.isConnected()) await this.init()
 
     try {
-      const page = await this.browser.newPage()
-      await page.setContent(data.body, { waitUntil: "domcontentloaded" })
-      await page.waitForTimeout(1000) // Needs time to fully render... 'domcontentloaded' doesn't seems to help with it
+      await this.page.setContent(data.body, { waitUntil: "networkidle0" })
+      await this.page.emulateMediaType(data.media || "print")
 
-      await page.emulateMediaType(data.media || "print")
-
-      const pdf = await page.pdf({
+      const pdf = await this.page.pdf({
         headerTemplate: data.header ? data.header : "<span></span>",
         footerTemplate: data.footer ? data.footer : "<span></span>",
         format:
@@ -40,14 +39,10 @@ class BrowserRenderer {
         displayHeaderFooter: true
       })
 
-      await page.close()
-
       return pdf
     } catch (err) {
       console.log(err)
       throw err
-    } finally {
-      await this.close()
     }
   }
 }

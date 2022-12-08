@@ -8,6 +8,7 @@ const prepareNext = require("electron-next");
 
 const init = require("./init");
 require("./ipcHandlers");
+const browser = require("./lib/browser");
 
 // Prepare the renderer once the app is ready
 app.on("ready", async () => {
@@ -27,9 +28,14 @@ app.on("ready", async () => {
     : new URL("renderer/out/index.html", `file://${__dirname}`).toString();
 
   mainWindow.loadURL(url);
+
+  browser.init();
 });
 
 // Quit the app once all windows are closed
-app.on("window-all-closed", app.quit);
+app.on("window-all-closed", () => {
+  browser.close();
+  app.quit();
+});
 
 init();
