@@ -10,7 +10,9 @@ const Home = () => {
     const [modalIsOpen, setIsOpen] = useState(false);
     const [refresh, setRefresh] = useState(null);
     const [partners, setPartners] = useState(null);
+
     const [currentPartnerInvoice, setCurrentPartnerInvoice] = useState(null);
+    const [previousBalance, setPreviousBalance] = useState(0);
 
     const openModal = () => {
         setIsOpen(true);
@@ -32,11 +34,11 @@ const Home = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const previousBalance = 0; // TODO: get previousBalance from input
-
         const data = await window.electron.invoice.generateInvoice(currentPartnerInvoice, previousBalance);
         downloadPDF(Buffer.from(data.buffer).toString('base64'), data.filename);
         setRefresh(data.number);
+        setCurrentPartnerInvoice(null);
+        setPreviousBalance(0);
 
         closeModal();
     }
@@ -99,9 +101,11 @@ const Home = () => {
                     <h2 className="text-lg font-bold text-slate-600 mb-2">Saldo Anterior</h2>
                     <p className="text-sm font-bold text-slate-600 mb-2">Saldo pendiente:</p>
                     <input type="number"
+                        value={previousBalance}
+                        onChange={(e) => setPreviousBalance(Number.parseInt(e.target.value))}
                         className="w-[100px] border-b border-slate-800 outline-none" />
                     <div className="flex flex-row justify-end">
-                        <button className="text-slate-400 m-4">Cancelar</button>
+                        <button onClick={closeModal} className="text-slate-400 m-4">Cancelar</button>
                         <button type="submit" className="text-teal-500 font-bold">OK</button>
                     </div>
                 </form>
