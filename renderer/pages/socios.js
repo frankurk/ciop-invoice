@@ -5,15 +5,37 @@ import { useState, useEffect } from "react";
 import data from "../data/partners";
 
 const Partners = () => {
-
     const [showForm, setShowForm] = useState(false);
+
     const [levels, setLevels] = useState(null);
+    const [regions, setRegions] = useState(null);
+    const [communes, setCommunes] = useState(null);
+
     const [selectedLevel, setSelectedLevel] = useState(null);
+    const [selectedRegion, setSelectedRegion] = useState(null);
+    const [selectedCommune, setSelectedCommune] = useState(null);
     const [name, setName] = useState(null);
     const [address, setAddress] = useState(null);
     const [rut, setRut] = useState(null);
 
+    const getLocationData = (regionId) => {
+        window.electron.partner.getLocationData(regionId).then((data) => {
+            if (regionId) {
+                setCommunes(data.communes);
+            } else {
+                setRegions(data.regions);
+            }
+        });
+    };
+
+    const regionChange = (e) => {
+        setSelectedRegion(e.target.value);
+        setSelectedCommune(null);
+        getLocationData(e.target.value);
+    };
+
     useEffect(() => {
+        getLocationData();
         window.electron.partner.getLevels().then((levels) => {
             setLevels(levels);
         });
@@ -27,8 +49,6 @@ const Partners = () => {
             <p className="text-lg text-teal-500 font-bold text-center">Agregar Socio</p>
         </div>
     );
-
-    console.log(selectedLevel);
 
     return (
         <>
@@ -64,18 +84,30 @@ const Partners = () => {
                                         onChange={(e) => setSelectedLevel(e.target.value)}
                                         value={selectedLevel}
                                         className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2">
+                                        <option value="">Seleccionar</option>
                                         {levels && levels.map((option) => (
-                                            <option key={option._id}>{option.name}</option>
+                                            <option key={option._id} value={option._id}>{option.name}</option>
                                         ))}
                                     </select>
                                 </label>
                                 <label className="text-slate-600 w-[22%]">Región:<select
-                                    className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2"
-                                />
+                                    onChange={regionChange}
+                                    value={selectedRegion}
+                                    className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2">
+                                    <option value="">Seleccionar...</option>
+                                    {regions && regions.map((option) => (
+                                        <option key={option._id} value={option._id}>{option.name}</option>
+                                    ))}
+                                </select>
                                 </label>
                                 <label className="text-slate-600 w-[22%]">Comuna:<select
-                                    className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2"
-                                />
+                                    onChange={(e) => setSelectedCommune(e.target.value)}
+                                    value={selectedCommune}
+                                    className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2">
+                                    {selectedRegion && communes ? communes.map((option) => (
+                                        <option key={option._id} value={option._id}>{option.name}</option>
+                                    )) : <option value="">Seleccione región</option>}
+                                </select>
                                 </label>
                             </div>
                             <div className="w-full flex flex-row justify-between">

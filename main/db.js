@@ -9,6 +9,8 @@ const dbFactory = (fileName) =>
   });
 
 const db = {
+  region: dbFactory("region.db"),
+  commune: dbFactory("commune.db"),
   partnerLevel: dbFactory("partner-levels.db"),
   partner: dbFactory("partners.db"),
   invoiceGeneration: dbFactory("invoices.db"),
