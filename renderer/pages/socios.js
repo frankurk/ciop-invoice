@@ -39,7 +39,7 @@ const Partners = () => {
     };
 
     const addPartner = () => {
-        window.electron.partner.newPartner({
+        window.electron.partner.new({
             name,
             address,
             rut: rut.formatted,
@@ -58,10 +58,10 @@ const Partners = () => {
 
     useEffect(() => {
         getLocationData();
-        window.electron.partner.getLevels().then((levels) => {
+        window.electron.partner.getPartnerLevels().then((levels) => {
             setLevels(levels);
         });
-        window.electron.partner.getPartners().then((partners) => {
+        window.electron.partner.getAll().then((partners) => {
             setPartners(partners);
         });
     }, []);
@@ -172,7 +172,11 @@ const Partners = () => {
                                 <td className="border-b border-gray-200">{partner.commune.name}</td>
                                 <td className="border-b border-gray-200">{partner.partnerLevel.name}</td>
                                 <td className="border-b border-gray-200"><button><Image src="/edit.svg" width="20" height="20" alt="editar" className="mx-4" /></button></td>
-                                <td className="border-b border-gray-200"><button><Image src="/trash.svg" width="20" height="20" alt="eliminar" /></button></td>
+                                <td className="border-b border-gray-200"><button onClick={() => {
+                                    window.electron.partner.delete(partner._id).then(() => {
+                                        setPartners(partners.filter(p => p._id !== partner._id))
+                                    })
+                                }}><Image src="/trash.svg" width="20" height="20" alt="eliminar" /></button></td>
                             </tr>
                         ))}
                     </tbody>

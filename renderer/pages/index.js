@@ -42,7 +42,7 @@ const Home = () => {
     }
 
     useEffect(() => {
-        window.electron.partner.getPartners().then((partners) => {
+        window.electron.partner.getAll().then((partners) => {
             setPartners(partners);
         });
     }, []);

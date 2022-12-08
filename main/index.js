@@ -7,7 +7,7 @@ const isDev = require("electron-is-dev");
 const prepareNext = require("electron-next");
 
 const init = require("./init");
-require("./ipcHandlers");
+require("./lib/ipcHandlers");
 const browser = require("./lib/browser");
 
 // Prepare the renderer once the app is ready

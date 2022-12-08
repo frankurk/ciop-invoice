@@ -2,10 +2,11 @@ const { ipcRenderer, contextBridge } = require("electron");
 
 contextBridge.exposeInMainWorld("electron", {
   partner: {
-    getPartners: () => ipcRenderer.invoke("get-partners"),
+    getAll: () => ipcRenderer.invoke("get-partners"),
     getLocationData: (regionId) => ipcRenderer.invoke("get-location-data", regionId),
-    getLevels: () => ipcRenderer.invoke("get-partner-levels"),
-    newPartner: (partner) => ipcRenderer.invoke("new-partner", partner),
+    getPartnerLevels: () => ipcRenderer.invoke("get-partner-levels"),
+    new: (partner) => ipcRenderer.invoke("new-partner", partner),
+    delete: (partnerId) => ipcRenderer.invoke("delete-partner", partnerId),
   },
   invoice: {
     getCorrelative: () => ipcRenderer.invoke("get-correlative"),

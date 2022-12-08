@@ -1,7 +1,7 @@
 const { ipcMain } = require("electron");
 
-const invoiceHandler = require("./lib/invoice");
-const db = require("./lib/db");
+const invoiceHandler = require("./invoice");
+const db = require("./db");
 
 ipcMain.handle("get-partners", async () => {
   const partners = await db.partner.find().sort({ createdAt: 1 });
@@ -41,6 +41,10 @@ ipcMain.handle("new-partner", async (_event, payload) => {
     levelId: payload.levelId,
   });
   return partner;
+});
+
+ipcMain.handle("delete-partner", async (_event, userId) => {
+  await db.partner.deleteOne({ _id: userId });
 });
 
 ipcMain.handle("get-correlative", async () => {
