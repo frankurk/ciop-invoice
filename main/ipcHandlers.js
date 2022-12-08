@@ -3,6 +3,21 @@ const { ipcMain } = require("electron");
 const invoiceHandler = require("./lib/invoice");
 const db = require("./db");
 
+ipcMain.handle("get-partners", async () => {
+  const partners = await db.partner.find().sort({ createdAt: -1 });
+  for (const partner of partners) {
+    const commune = await db.commune.findOne({ _id: partner.communeId });
+    const region = await db.region.findOne({ _id: commune.regionId });
+    const partnerLevel = await db.partnerLevel.findOne({
+      _id: partner.levelId,
+    });
+    partner.commune = commune;
+    partner.commune.region = region;
+    partner.partnerLevel = partnerLevel;
+  }
+  return partners;
+});
+
 ipcMain.handle("get-location-data", async (_event, message) => {
   const regions = await db.region.find().sort({ index: 1 });
   let communes = [];

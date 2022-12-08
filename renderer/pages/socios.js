@@ -7,6 +7,7 @@ import data from "../data/partners";
 const Partners = () => {
     const [showForm, setShowForm] = useState(false);
 
+    const [partners, setPartners] = useState(null);
     const [levels, setLevels] = useState(null);
     const [regions, setRegions] = useState(null);
     const [communes, setCommunes] = useState(null);
@@ -59,6 +60,9 @@ const Partners = () => {
         getLocationData();
         window.electron.partner.getLevels().then((levels) => {
             setLevels(levels);
+        });
+        window.electron.partner.getPartners().then((partners) => {
+            setPartners(partners);
         });
     }, []);
 
@@ -159,13 +163,13 @@ const Partners = () => {
                         </tr>
                     </thead>
                     <tbody className="text-sm">
-                        {data.partners.map(partner => (
+                        {partners && partners.map(partner => (
                             <tr key={partner.id}>
                                 <td className="border-b border-gray-200">{partner.name}</td>
                                 <td className="border-b border-gray-200">{partner.rut}</td>
                                 <td className="border-b border-gray-200">{partner.address}</td>
                                 <td className="border-b border-gray-200">{partner.commune.name}</td>
-                                <td className="border-b border-gray-200">{partner.subscription.name}</td>
+                                <td className="border-b border-gray-200">{partner.partnerLevel.name}</td>
                                 <td className="border-b border-gray-200"><button><Image src="/edit.svg" width="20" height="20" alt="editar" className="mx-4" /></button></td>
                                 <td className="border-b border-gray-200"><button><Image src="/trash.svg" width="20" height="20" alt="eliminar" /></button></td>
                             </tr>

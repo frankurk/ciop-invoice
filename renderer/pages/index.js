@@ -1,16 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
-import data from "../data/partners";
 import InvoiceNumber from "../components/InvoiceNumber";
 import Modal from 'react-modal';
 import Link from "next/link";
 Modal.setAppElement("#__next");
 
 const Home = () => {
-
     const [modalIsOpen, setIsOpen] = useState(false);
-    const [backendResponse, setBackendResponse] = useState(null);
+    const [refresh, setRefresh] = useState(null);
+    const [partners, setPartners] = useState(null);
 
     const openModal = () => {
         setIsOpen(true);
@@ -37,10 +36,16 @@ const Home = () => {
 
         const data = await window.electron.invoice.generateInvoice(partnerId, previousBalance);
         downloadPDF(Buffer.from(data.buffer).toString('base64'), data.filename);
-        setBackendResponse(data.number);
+        setRefresh(data.number);
 
         closeModal();
     }
+
+    useEffect(() => {
+        window.electron.partner.getPartners().then((partners) => {
+            setPartners(partners);
+        });
+    }, []);
 
     return (
         <>
@@ -51,7 +56,7 @@ const Home = () => {
                 Generar Invoice
             </p>
             <div className="w-full flex flex-row justify-between px-12 h-10 items-center">
-                <InvoiceNumber refresh={backendResponse} />
+                <InvoiceNumber refresh={refresh} />
                 <Link href="/socios" className="text-teal-500 font-bold outline rounded-md p-2">Administrar Socios</Link>
             </div>
             <div className="flex w-full justify-center p-12">
@@ -67,13 +72,13 @@ const Home = () => {
                         </tr>
                     </thead>
                     <tbody className="text-sm">
-                        {data.partners.map(partner => (
+                        {partners && partners.map(partner => (
                             <tr key={partner.id}>
                                 <td className="border-b border-gray-200">{partner.name}</td>
                                 <td className="border-b border-gray-200">{partner.rut}</td>
                                 <td className="border-b border-gray-200">{partner.address}</td>
                                 <td className="border-b border-gray-200">{partner.commune.name}</td>
-                                <td className="border-b border-gray-200">{partner.subscription.name}</td>
+                                <td className="border-b border-gray-200">{partner.partnerLevel.name}</td>
                                 <td className="border-b border-gray-200"><button onClick={openModal} ><Image src="/download.svg" width="20" height="20" atl="download" /></button></td>
                             </tr>
                         ))}
