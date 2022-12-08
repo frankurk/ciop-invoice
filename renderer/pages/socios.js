@@ -12,11 +12,20 @@ const Partners = () => {
     const [communes, setCommunes] = useState(null);
 
     const [selectedLevel, setSelectedLevel] = useState(null);
-    const [selectedRegion, setSelectedRegion] = useState(null);
     const [selectedCommune, setSelectedCommune] = useState(null);
     const [name, setName] = useState(null);
     const [address, setAddress] = useState(null);
     const [rut, setRut] = useState(null);
+
+    const cleanState = () => {
+        setShowForm(false);
+        setName(null);
+        setAddress(null);
+        setRut(null);
+        setSelectedLevel(null);
+        setSelectedCommune(null);
+        setCommunes(null);
+    };
 
     const getLocationData = (regionId) => {
         window.electron.partner.getLocationData(regionId).then((data) => {
@@ -28,9 +37,21 @@ const Partners = () => {
         });
     };
 
+    const addPartner = () => {
+        window.electron.partner.newPartner({
+            name,
+            address,
+            rut,
+            communeId: selectedCommune,
+            levelId: selectedLevel,
+        }).then(() => {
+            cleanState();
+        });
+    };
+
     const regionChange = (e) => {
-        setSelectedRegion(e.target.value);
         setSelectedCommune(null);
+        setCommunes(null);
         getLocationData(e.target.value);
     };
 
@@ -84,7 +105,7 @@ const Partners = () => {
                                         onChange={(e) => setSelectedLevel(e.target.value)}
                                         value={selectedLevel}
                                         className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2">
-                                        <option value="">Seleccionar</option>
+                                        <option value="">Seleccionar...</option>
                                         {levels && levels.map((option) => (
                                             <option key={option._id} value={option._id}>{option.name}</option>
                                         ))}
@@ -92,7 +113,6 @@ const Partners = () => {
                                 </label>
                                 <label className="text-slate-600 w-[22%]">Región:<select
                                     onChange={regionChange}
-                                    value={selectedRegion}
                                     className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2">
                                     <option value="">Seleccionar...</option>
                                     {regions && regions.map((option) => (
@@ -104,7 +124,7 @@ const Partners = () => {
                                     onChange={(e) => setSelectedCommune(e.target.value)}
                                     value={selectedCommune}
                                     className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2">
-                                    {selectedRegion && communes ? communes.map((option) => (
+                                    {communes ? communes.map((option) => (
                                         <option key={option._id} value={option._id}>{option.name}</option>
                                     )) : <option value="">Seleccione región</option>}
                                 </select>
@@ -113,10 +133,10 @@ const Partners = () => {
                             <div className="w-full flex flex-row justify-between">
                             </div>
                             <div className="flex flex-row justify-end mt-4">
-                                <button onClick={() => setShowForm(false)} className="text-slate-400 mx-4 my-2">
+                                <button onClick={cleanState} className="text-slate-400 mx-4 my-2">
                                     Cancelar
                                 </button>
-                                <button type="submit" className="text-teal-500 font-bold outline rounded-lg px-2">
+                                <button type="submit" onClick={addPartner} className="text-teal-500 font-bold outline rounded-lg px-2">
                                     Agregar
                                 </button>
                             </div>

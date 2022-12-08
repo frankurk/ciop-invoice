@@ -4,6 +4,7 @@ contextBridge.exposeInMainWorld("electron", {
   partner: {
     getLocationData: (regionId) => ipcRenderer.invoke("get-location-data", regionId),
     getLevels: () => ipcRenderer.invoke("get-partner-levels"),
+    newPartner: (partner) => ipcRenderer.invoke("new-partner", partner),
   },
   invoice: {
     getCorrelative: () => ipcRenderer.invoke("get-correlative"),

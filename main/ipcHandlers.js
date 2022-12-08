@@ -17,6 +17,17 @@ ipcMain.handle("get-partner-levels", async () => {
   return parnerLevels;
 });
 
+ipcMain.handle("new-partner", async (_event, payload) => {
+  const partner = await db.partner.insertOne({
+    name: payload.name,
+    address: payload.address,
+    rut: payload.rut,
+    communeId: payload.communeId,
+    levelId: payload.levelId,
+  });
+  return partner;
+});
+
 ipcMain.handle("get-correlative", async () => {
   const lastInvoiceNumber = await db.invoiceGeneration.findOne();
   return lastInvoiceNumber?.targetNumber || 1;
