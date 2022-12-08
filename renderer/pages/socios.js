@@ -58,7 +58,7 @@ const Partners = () => {
 
     useEffect(() => {
         getLocationData();
-        window.electron.partner.getPartnerLevels().then((levels) => {
+        window.electron.partnerLevel.getAll().then((levels) => {
             setLevels(levels);
         });
         window.electron.partner.getAll().then((partners) => {

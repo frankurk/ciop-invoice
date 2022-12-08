@@ -32,6 +32,18 @@ ipcMain.handle("get-partner-levels", async () => {
   return parnerLevels;
 });
 
+ipcMain.handle("new-partner-level", async (_event, payload) => {
+  const partnerLevel = await db.partnerLevel.insertOne({
+    name: payload.name,
+    price: payload.price,
+  });
+  return partnerLevel;
+});
+
+ipcMain.handle("delete-partner-level", async (_event, levelId) => {
+  await db.partnerLevel.deleteOne({ _id: levelId });
+});
+
 ipcMain.handle("new-partner", async (_event, payload) => {
   const partner = await db.partner.insertOne({
     name: payload.name,
@@ -59,8 +71,8 @@ ipcMain.handle("set-correlative", async (_event, message) => {
   });
 });
 
-ipcMain.handle("generate-invoice", async (_event, message) => {
-  const { partnerId, previousBalance = 0 } = JSON.parse(message);
+ipcMain.handle("generate-invoice", async (_event, payload) => {
+  const { partnerId, previousBalance = 0 } = payload;
   const invoice = await invoiceHandler.generateInvoice({
     partnerId,
     previousBalance,
