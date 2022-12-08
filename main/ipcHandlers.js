@@ -1,7 +1,7 @@
 const { ipcMain } = require("electron");
 
 const invoiceHandler = require("./lib/invoice");
-const db = require("./db");
+const db = require("./lib/db");
 
 ipcMain.handle("get-partners", async () => {
   const partners = await db.partner.find().sort({ createdAt: 1 });

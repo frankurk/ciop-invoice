@@ -1,8 +1,8 @@
 const fs = require("fs/promises");
-const axios = require("axios");
 const { compile } = require("handlebars");
-const db = require("../db");
+const db = require("./db");
 const browserRenderer = require("./browser");
+const { getUf } = require("./uf");
 
 const clpCLLocale = Intl.NumberFormat("es-CL");
 
@@ -17,25 +17,6 @@ function upperCaseFirstLetter(string) {
 const sanitizeFilename = (filename) => {
   return filename.replace(/[^a-z0-9 ]/gi, '');
 }
-
-const getUf = async (date) => {
-  const { data } = await axios.get(`https://mindicador.cl/api/uf/${date}`);
-  return data.serie[0].valor;
-};
-
-const getUfCMF = async (year, month, day) => {
-  const key = process.env.CMFCHILE_KEY || "null";
-  const url = `https://api.cmfchile.cl/api-sbifv3/recursos_api/uf/${pad(
-    year
-  )}/${pad(month)}/dias/${pad(day)}?apikey=${key}&formato=json`;
-  const { data } = await axios.get(url);
-
-  const standardizedValue = data.UFs[0].Valor.replace(".", "").replace(
-    ",",
-    "."
-  );
-  return Number.parseFloat(standardizedValue);
-};
 
 class InvoiceHandler {
   async generateInvoice({ partnerId, previousBalance = 0 }) {
@@ -63,7 +44,6 @@ class InvoiceHandler {
     );
     const totalToPay = Math.round(currentMonthCostClp + previousBalance);
 
-    // get it from __dirname
     const html = await fs.readFile(`${__dirname}/../templates/v1/index.html`, "utf-8");
     const template = compile(html);
 

@@ -1,4 +1,4 @@
-const db = require("./db");
+const db = require("./lib/db");
 
 const init = async () => {
   const partnerLevels = await db.partnerLevel.find();
