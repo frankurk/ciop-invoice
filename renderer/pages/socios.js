@@ -2,7 +2,6 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import data from "../data/partners";
 
 const Partners = () => {
     const [showForm, setShowForm] = useState(false);
@@ -164,7 +163,7 @@ const Partners = () => {
                     </thead>
                     <tbody className="text-sm">
                         {partners && partners.map(partner => (
-                            <tr key={partner.id}>
+                            <tr key={partner._id}>
                                 <td className="border-b border-gray-200">{partner.name}</td>
                                 <td className="border-b border-gray-200">{partner.rut}</td>
                                 <td className="border-b border-gray-200">{partner.address}</td>

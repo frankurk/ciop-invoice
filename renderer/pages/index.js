@@ -10,6 +10,7 @@ const Home = () => {
     const [modalIsOpen, setIsOpen] = useState(false);
     const [refresh, setRefresh] = useState(null);
     const [partners, setPartners] = useState(null);
+    const [currentPartnerInvoice, setCurrentPartnerInvoice] = useState(null);
 
     const openModal = () => {
         setIsOpen(true);
@@ -31,10 +32,9 @@ const Home = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const partnerId = '1'; // TODO: get partnerId from select
         const previousBalance = 0; // TODO: get previousBalance from input
 
-        const data = await window.electron.invoice.generateInvoice(partnerId, previousBalance);
+        const data = await window.electron.invoice.generateInvoice(currentPartnerInvoice, previousBalance);
         downloadPDF(Buffer.from(data.buffer).toString('base64'), data.filename);
         setRefresh(data.number);
 
@@ -73,13 +73,16 @@ const Home = () => {
                     </thead>
                     <tbody className="text-sm">
                         {partners && partners.map(partner => (
-                            <tr key={partner.id}>
+                            <tr key={partner._id}>
                                 <td className="border-b border-gray-200">{partner.name}</td>
                                 <td className="border-b border-gray-200">{partner.rut}</td>
                                 <td className="border-b border-gray-200">{partner.address}</td>
                                 <td className="border-b border-gray-200">{partner.commune.name}</td>
                                 <td className="border-b border-gray-200">{partner.partnerLevel.name}</td>
-                                <td className="border-b border-gray-200"><button onClick={openModal} ><Image src="/download.svg" width="20" height="20" atl="download" /></button></td>
+                                <td className="border-b border-gray-200"><button onClick={() => {
+                                    setCurrentPartnerInvoice(partner._id);
+                                    openModal();
+                                }} ><Image src="/download.svg" width="20" height="20" atl="download" /></button></td>
                             </tr>
                         ))}
                     </tbody>

@@ -39,32 +39,17 @@ const getUfCMF = async (year, month, day) => {
 
 class InvoiceHandler {
   async generateInvoice({ partnerId, previousBalance = 0 }) {
-    const partner = {
-      id: "3ef197ba-abf5-4a24-b14a-0c27d90e878c",
-      name: "Microsoft Corp.",
-      address: "1 Apple Loop, California",
-      rut: "11.111.111-1",
-      commune: {
-        id: "bd8a66a7-811f-4be1-9a5f-142495e3a3ca",
-        name: "Jamaica",
-        region: {
-          id: "6e4e7ac0-6dee-4049-8bb6-04c6df0e995b",
-          name: "New Orleans",
-        },
-      },
-      subscription: {
-        id: "5b7636cd-5fa7-4525-85de-4f49d3ed794e",
-        price: 75.2,
-        name: "A",
-      },
-    };
+    const partner = await db.partner.findOne({ _id: partnerId });
+    const partnerLevel = await db.partnerLevel.findOne({ _id: partner.levelId });
+    const commune = await db.commune.findOne({ _id: partner.communeId });
+    const region = await db.region.findOne({ _id: commune.regionId });
 
     const lastInvoiceGeneration = await db.invoiceGeneration.find();
 
-    const nextNumber = lastInvoiceGeneration.length
-      ? lastInvoiceGeneration[0].targetNumber + 1
+    const correlative = lastInvoiceGeneration.length
+      ? lastInvoiceGeneration[0].targetNumber
       : 1;
-    const address = `${partner.address}, ${partner.commune.name}`;
+    const address = `${partner.address}, ${commune.name}`;
 
     const DATE = new Date();
     const DAY = DATE.getDate();
@@ -74,7 +59,7 @@ class InvoiceHandler {
     const FULL_DATE = `${pad(DAY)}-${pad(MONTH)}-${YEAR}`;
     const ufValue = await getUf(FULL_DATE);
     const currentMonthCostClp = Math.round(
-      partner.subscription.price * ufValue
+      partnerLevel.price * ufValue
     );
     const totalToPay = Math.round(currentMonthCostClp + previousBalance);
 
@@ -86,11 +71,11 @@ class InvoiceHandler {
       partner: {
         name: partner.name.toUpperCase(),
         address,
-        region: partner.commune.region.name,
+        region: region.name,
         rut: partner.rut,
       },
       invoice: {
-        number: nextNumber,
+        number: correlative,
         date: FULL_DATE,
         firstDayOfMonth: FIRST_DAY_OF_MONTH,
         details: [
@@ -101,7 +86,7 @@ class InvoiceHandler {
                 month: "long",
               })
             )} ${YEAR}`,
-            amountInUf: clpCLLocale.format(partner.subscription.price),
+            amountInUf: clpCLLocale.format(partnerLevel.price),
             amountInClp: clpCLLocale.format(currentMonthCostClp),
           },
         ],
@@ -124,13 +109,13 @@ class InvoiceHandler {
     // store the current invoice number before returning
     await db.invoiceGeneration.removeMany();
     await db.invoiceGeneration.insert({
-      targetNumber: nextNumber,
+      targetNumber: correlative + 1,
     });
 
     return {
       buffer: pdf,
-      filename: `${nextNumber - 1} - ${sanitizeFilename(partner.name)}.pdf`,
-      number: nextNumber,
+      filename: `${correlative} - ${sanitizeFilename(partner.name)}.pdf`,
+      number: correlative,
     };
   }
 }
