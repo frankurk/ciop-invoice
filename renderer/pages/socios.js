@@ -1,7 +1,8 @@
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useRut } from "react-rut-formatter";
 
 const Partners = () => {
     const [showForm, setShowForm] = useState(false);
@@ -15,13 +16,13 @@ const Partners = () => {
     const [selectedCommune, setSelectedCommune] = useState(null);
     const [name, setName] = useState(null);
     const [address, setAddress] = useState(null);
-    const [rut, setRut] = useState(null);
+    const { rut, updateRut, isValid: isRutValid } = useRut();
 
     const cleanState = () => {
         setShowForm(false);
         setName(null);
         setAddress(null);
-        setRut(null);
+        updateRut(null);
         setSelectedLevel(null);
         setSelectedCommune(null);
         setCommunes(null);
@@ -41,7 +42,7 @@ const Partners = () => {
         window.electron.partner.newPartner({
             name,
             address,
-            rut,
+            rut: rut.formatted,
             communeId: selectedCommune,
             levelId: selectedLevel,
         }).then(() => {
@@ -99,12 +100,13 @@ const Partners = () => {
                             </div>
                             <div className="w-full flex flex-row justify-between">
                                 <label className="text-slate-600 w-[22%]">
-                                    RUT:<input onChange={(e) => setRut(e.target.value)} value={rut} type="text"
+                                    RUT:<input onChange={(e) => updateRut(e.target.value)} value={rut.formatted} type="text"
                                         className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2 px-2"
                                     />
+                                    {!!rut.raw && !isRutValid && <span className="text-red-600">RUT inválido</span>}
                                 </label>
                                 <label className="text-slate-600 w-[22%]">
-                                    Nivel:<select
+                                    Cuota:<select
                                         onChange={(e) => setSelectedLevel(e.target.value)}
                                         value={selectedLevel}
                                         className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2">
@@ -139,7 +141,7 @@ const Partners = () => {
                                 <button onClick={cleanState} className="text-slate-400 mx-4 my-2">
                                     Cancelar
                                 </button>
-                                <button type="submit" onClick={addPartner} className="text-teal-500 font-bold outline rounded-lg px-2">
+                                <button type="submit" disabled={!isRutValid} onClick={addPartner} className="text-teal-500 font-bold outline rounded-lg px-2">
                                     Agregar
                                 </button>
                             </div>
