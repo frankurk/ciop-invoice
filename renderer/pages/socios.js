@@ -173,9 +173,11 @@ const Partners = () => {
                                 <td className="border-b border-gray-200">{partner.partnerLevel.name}</td>
                                 <td className="border-b border-gray-200"><button><Image src="/edit.svg" width="20" height="20" alt="editar" className="mx-4" /></button></td>
                                 <td className="border-b border-gray-200"><button onClick={() => {
-                                    window.electron.partner.delete(partner._id).then(() => {
-                                        setPartners(partners.filter(p => p._id !== partner._id))
-                                    })
+                                    if (confirm(`Confirmar eliminación:\n${partner.name}`)) {
+                                        window.electron.partner.delete(partner._id).then(() => {
+                                            setPartners(partners.filter(p => p._id !== partner._id))
+                                        })
+                                    }
                                 }}><Image src="/trash.svg" width="20" height="20" alt="eliminar" /></button></td>
                             </tr>
                         ))}
