@@ -50,8 +50,6 @@ const Partners = () => {
         </div>
     );
 
-    console.log(selectedLevel);
-
     return (
         <>
             <Head>
@@ -88,7 +86,7 @@ const Partners = () => {
                                         className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2">
                                         <option value="">Seleccionar</option>
                                         {levels && levels.map((option) => (
-                                            <option key={option._id}>{option.name}</option>
+                                            <option key={option._id} value={option._id}>{option.name}</option>
                                         ))}
                                     </select>
                                 </label>
@@ -96,9 +94,9 @@ const Partners = () => {
                                     onChange={regionChange}
                                     value={selectedRegion}
                                     className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2">
-                                    <option value="">Seleccionar</option>
+                                    <option value="">Seleccionar...</option>
                                     {regions && regions.map((option) => (
-                                        <option value={option._id}>{option.name}</option>
+                                        <option key={option._id} value={option._id}>{option.name}</option>
                                     ))}
                                 </select>
                                 </label>
@@ -106,9 +104,9 @@ const Partners = () => {
                                     onChange={(e) => setSelectedCommune(e.target.value)}
                                     value={selectedCommune}
                                     className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2">
-                                    {communes && communes.map((option) => (
-                                        <option value={option._id}>{option.name}</option>
-                                    ))}
+                                    {selectedRegion && communes ? communes.map((option) => (
+                                        <option key={option._id} value={option._id}>{option.name}</option>
+                                    )) : <option value="">Seleccione región</option>}
                                 </select>
                                 </label>
                             </div>

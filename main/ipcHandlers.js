@@ -4,7 +4,6 @@ const invoiceHandler = require("./lib/invoice");
 const db = require("./db");
 
 ipcMain.handle("get-location-data", async (_event, message) => {
-  console.log(message);
   const regions = await db.region.find().sort({ index: 1 });
   let communes = [];
   if (!!message) {
