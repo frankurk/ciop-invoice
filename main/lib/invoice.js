@@ -4,7 +4,7 @@ const db = require("./db");
 const browserRenderer = require("./browser");
 const { getUf } = require("./uf");
 
-const clpCLLocale = Intl.NumberFormat("es-CL");
+const clLocale = Intl.NumberFormat("es-CL");
 
 function pad(n) {
   return n.toString().padStart(2, "0");
@@ -39,7 +39,7 @@ class InvoiceHandler {
     const YEAR = DATE.getFullYear();
     const FIRST_DAY_OF_MONTH = `01-${pad(MONTH)}-${YEAR}`;
     const FULL_DATE = `${pad(DAY)}-${pad(MONTH)}-${YEAR}`;
-    const ufValue = await getUf(FULL_DATE);
+    const ufValue = await getUf(FIRST_DAY_OF_MONTH);
     const currentMonthCostClp = Math.round(
       partnerLevel.price * ufValue
     );
@@ -67,18 +67,18 @@ class InvoiceHandler {
                 month: "long",
               })
             )} ${YEAR}`,
-            amountInUf: clpCLLocale.format(partnerLevel.price),
-            amountInClp: clpCLLocale.format(currentMonthCostClp),
+            amountInUf: clLocale.format(partnerLevel.price),
+            amountInClp: clLocale.format(currentMonthCostClp),
           },
         ],
-        subtotal: clpCLLocale.format(currentMonthCostClp),
-        previousBalance: clpCLLocale.format(previousBalance),
-        totalToPay: clpCLLocale.format(totalToPay),
+        subtotal: clLocale.format(currentMonthCostClp),
+        previousBalance: clLocale.format(previousBalance),
+        totalToPay: clLocale.format(totalToPay),
         writtenMonth: DATE.toLocaleString("es-CL", {
           month: "long",
         }),
         year: YEAR,
-        ufValue: clpCLLocale.format(ufValue),
+        ufValue: clLocale.format(ufValue),
       },
     };
 

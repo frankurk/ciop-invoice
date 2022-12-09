@@ -6,10 +6,13 @@ import Modal from 'react-modal';
 import Link from "next/link";
 Modal.setAppElement("#__next");
 
+const clLocale = Intl.NumberFormat("es-CL");
+
 const Home = () => {
     const [modalIsOpen, setIsOpen] = useState(false);
     const [refresh, setRefresh] = useState(null);
     const [partners, setPartners] = useState(null);
+    const [ufPrice, setUfPrice] = useState(null);
 
     const [currentPartnerInvoice, setCurrentPartnerInvoice] = useState(null);
     const [previousBalance, setPreviousBalance] = useState(0);
@@ -47,6 +50,9 @@ const Home = () => {
         window.electron.partner.getAll().then((partners) => {
             setPartners(partners);
         });
+        window.electron.general.getUfPrice().then((price) => {
+            setUfPrice(price);
+        });
     }, []);
 
     return (
@@ -59,6 +65,9 @@ const Home = () => {
             </p>
             <div className="w-full flex flex-row justify-between px-12 h-10 items-center">
                 <InvoiceNumber refresh={refresh} />
+                {ufPrice && (
+                <p className="text-sm text-slate-600 mb-2">Valor de UF el {ufPrice.date}: ${clLocale.format(ufPrice.price)}</p>
+                )}
                 <Link href="/socios" className="text-teal-500 font-bold outline rounded-md p-2">Administrar Socios</Link>
                 <Link href="/partnerLevels" className="text-teal-500 font-bold outline rounded-md p-2">Administrar Cuotas</Link>
             </div>
@@ -85,7 +94,7 @@ const Home = () => {
                                 <td className="border-b border-gray-200"><button onClick={() => {
                                     setCurrentPartnerInvoice(partner._id);
                                     openModal();
-                                }} ><Image src="/download.svg" width="20" height="20" atl="download" /></button></td>
+                                }} ><Image src="/download.svg" width="20" height="20" alt="descargar" /></button></td>
                             </tr>
                         ))}
                     </tbody>

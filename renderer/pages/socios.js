@@ -29,7 +29,7 @@ const Partners = () => {
     };
 
     const getLocationData = (regionId) => {
-        window.electron.partner.getLocationData(regionId).then((data) => {
+        window.electron.general.getLocationData(regionId).then((data) => {
             if (regionId) {
                 setCommunes(data.communes);
             } else {

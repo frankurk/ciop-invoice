@@ -2,6 +2,7 @@ const { ipcMain } = require("electron");
 
 const invoiceHandler = require("./invoice");
 const db = require("./db");
+const { getUf } = require("./uf");
 
 ipcMain.handle("get-partners", async () => {
   const partners = await db.partner.find().sort({ createdAt: 1 });
@@ -79,4 +80,11 @@ ipcMain.handle("generate-invoice", async (_event, payload) => {
   });
 
   return invoice;
+});
+
+ipcMain.handle("get-uf-price", async () => {
+  const today = new Date();
+  const date = "01-" + `0${today.getMonth() + 1}`.slice(-2) + "-" + today.getFullYear();
+  const price = await getUf(date);
+  return { date, price };
 });

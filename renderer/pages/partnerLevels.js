@@ -3,6 +3,8 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 
+const clLocale = Intl.NumberFormat("es-CL");
+
 const PartnerLevels = () => {
     const [showForm, setShowForm] = useState(false);
 
@@ -98,7 +100,7 @@ const PartnerLevels = () => {
                         {levels && levels.map(level => (
                             <tr key={level._id}>
                                 <td className="border-b border-gray-200">{level.name}</td>
-                                <td className="border-b border-gray-200">{level.price}</td>
+                                <td className="border-b border-gray-200">{clLocale.format(level.price)}</td>
                                 <td className="border-b border-gray-200"><button><Image src="/edit.svg" width="20" height="20" alt="editar" className="mx-4" /></button></td>
                                 <td className="border-b border-gray-200"><button onClick={() => {
                                     if (confirm(`Confirmar eliminación:\n${level.name}`)) {
