@@ -4,36 +4,18 @@ import { useRouter } from 'next/navigation';
 
 const LandingPage = () => {
     const [success, setSuccess] = useState(null);
-    const [data, setData] = useState(null);
     const [uf, setUf] = useState(null);
 
     const router = useRouter();
 
-    const fetchRandomData = () => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                reject(new Error("Error: Something went wrong"));
-            }, 2000);
-        });
-    };
-
     const updateUF = () => {
         const date = new Date();
+        const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
 
-        window.electron.general.overrideUfPrice(date, uf).then(() => {
+        window.electron.general.overrideUfPrice(firstDayOfMonth, uf).then(() => {
             router.push("/generateInvoice");
         })
     }
-
-    useEffect(() => {
-        window.electron.general.getUfPrice().then((payload) => {
-            setSuccess(true);
-            setData(payload)
-            router.push("/generateInvoice");
-        }).catch((err) => {
-            setSuccess(false);
-        })
-    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -41,9 +23,18 @@ const LandingPage = () => {
         updateUF();
     }
 
+    useEffect(() => {
+        window.electron.general.getUfPrice().then((payload) => {
+            setSuccess(true);
+            router.push("/generateInvoice");
+        }).catch((err) => {
+            setSuccess(false);
+        })
+    }, []);
+
     const LoadingAnimation = (
         <div className="w-full h-screen flex justify-center items-center">
-            <ReactLoading type="spinningBubbles" color={"#14b8a6"} height={"100px"} width={"100px"} />
+            <ReactLoading type="spinningBubbles" color="#14b8a6" height="100px" width="100px" />
         </div>
     );
 

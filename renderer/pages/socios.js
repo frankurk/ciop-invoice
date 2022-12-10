@@ -94,7 +94,7 @@ const Partners = () => {
                 <title>Administrar socios</title>
             </Head>
             <div className="w-full px-10 mt-6">
-                <Link href="/" className="text-lg text-teal-500 font-bold"><Image src="/back.svg" alt="volver" width="35" height="35"></Image></Link>
+                <Link href="/generateInvoice" className="text-lg text-teal-500 font-bold"><Image src="/back.svg" alt="volver" width="35" height="35"></Image></Link>
                 <div className="flex justify-center">
                     {showForm ? <div className="flex flex-col justify-center">
                         <form className="w-[850px] my-5 p-5 rounded-lg border border-gray-500 self-center">

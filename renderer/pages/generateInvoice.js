@@ -8,7 +8,7 @@ Modal.setAppElement("#__next");
 
 const clLocale = Intl.NumberFormat("es-CL");
 
-const Home = () => {
+const GenerateInvoice = () => {
     const [modalIsOpen, setIsOpen] = useState(false);
     const [refresh, setRefresh] = useState(null);
     const [partners, setPartners] = useState(null);
@@ -58,7 +58,7 @@ const Home = () => {
     return (
         <>
             <Head>
-                <title>Invoice Ópticas de Chile</title>
+                <title>Ópticas de Chile Invoice</title>
             </Head>
             <div className="w-full p-12 flex flex-row justify-between">
                 <p className="text-2xl font-bold text-slate-600">
@@ -128,4 +128,4 @@ const Home = () => {
     )
 }
 
-export default Home;
+export default GenerateInvoice;
