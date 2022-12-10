@@ -60,16 +60,20 @@ const Home = () => {
             <Head>
                 <title>Invoice Ópticas de Chile</title>
             </Head>
-            <p className="w-full m-12 text-2xl font-bold text-slate-600 mb-6">
-                Generar Invoice
-            </p>
+            <div className="w-full p-12 flex flex-row justify-between">
+                <p className="text-2xl font-bold text-slate-600">
+                    Generar Invoice
+                </p>
+                {ufPrice && (
+                    <p className="text-sm text-slate-600 mb-2">Valor de UF el {ufPrice.date.toLocaleDateString('es-CL')}: ${clLocale.format(ufPrice.price)}</p>
+                )}
+            </div>
             <div className="w-full flex flex-row justify-between px-12 h-10 items-center">
                 <InvoiceNumber refresh={refresh} />
-                {ufPrice && (
-                <p className="text-sm text-slate-600 mb-2">Valor de UF el {ufPrice.date.toLocaleDateString('es-CL')}: ${clLocale.format(ufPrice.price)}</p>
-                )}
-                <Link href="/socios" className="text-teal-500 font-bold outline rounded-md p-2">Administrar Socios</Link>
+                <div className="flex flex-row justify-between">
+                <Link href="/socios" className="text-teal-500 font-bold outline rounded-md p-2 mr-4">Administrar Socios</Link>
                 <Link href="/partnerLevels" className="text-teal-500 font-bold outline rounded-md p-2">Administrar Cuotas</Link>
+                </div>
             </div>
             <div className="flex w-full justify-center p-12">
                 <table className="w-full border-separate border-spacing-y-8">

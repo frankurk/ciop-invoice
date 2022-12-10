@@ -49,7 +49,7 @@ const LandingPage = () => {
 
     return (
         <div>
-            {success === false ? <div className="w-full h-screen flex flex-col justify-center items-center bg-zinc-100">
+            {success === false ? <div className="w-full h-screen flex flex-col justify-center items-center">
                 <p className="text-lg text-slate-600 mr-2 w-3/5">Lo sentimos, hubo un error y no se pudo cargar automaticamente el valor de la UF. Por favor ingrese la UF de forma manual. </p>
                 <form className="flex flex-row m-10" onSubmit={handleSubmit}>
                     <p className="text-lg text-slate-600 mr-2 font-bold w-3/5">Valor UF:</p>
