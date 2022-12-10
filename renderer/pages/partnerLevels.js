@@ -84,7 +84,7 @@ const PartnerLevels = () => {
                                     Precio:<input onChange={(e) => setPrice(e.target.value)} value={price} type="number"
                                         className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2 px-2"
                                     />
-                                </label>                
+                                </label>
                             </div>
                             <div className="w-full flex flex-row justify-between">
                             </div>
@@ -135,10 +135,10 @@ const PartnerLevels = () => {
                 className={`fixed right-10 bottom-10 z-50 ${infoState} border-r-8 border-red-600 bg-white px-5 py-4 drop-shadow-lg`}
             >
                 <p className="text-sm">
-                <span className="mr-2 inline-block rounded-full bg-red-600 px-3 py-1 font-extrabold text-white">
-                    !
-                </span>
-                {message}
+                    <span className="mr-2 inline-block rounded-full bg-red-600 px-3 py-1 font-extrabold text-white">
+                        !
+                    </span>
+                    {message}
                 </p>
             </div>
         </>

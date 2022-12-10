@@ -201,10 +201,10 @@ const Partners = () => {
                 className={`fixed right-10 bottom-10 z-50 ${infoState} border-r-8 border-red-600 bg-white px-5 py-4 drop-shadow-lg`}
             >
                 <p className="text-sm">
-                <span className="mr-2 inline-block rounded-full bg-red-600 px-3 py-1 font-extrabold text-white">
-                    !
-                </span>
-                {message}
+                    <span className="mr-2 inline-block rounded-full bg-red-600 px-3 py-1 font-extrabold text-white">
+                        !
+                    </span>
+                    {message}
                 </p>
             </div>
         </>

@@ -71,8 +71,8 @@ const Home = () => {
             <div className="w-full flex flex-row justify-between px-12 h-10 items-center">
                 <InvoiceNumber refresh={refresh} />
                 <div className="flex flex-row justify-between">
-                <Link href="/socios" className="text-teal-500 font-bold outline rounded-md p-2 mr-4">Administrar Socios</Link>
-                <Link href="/partnerLevels" className="text-teal-500 font-bold outline rounded-md p-2">Administrar Cuotas</Link>
+                    <Link href="/socios" className="text-teal-500 font-bold outline rounded-md p-2 mr-4">Administrar Socios</Link>
+                    <Link href="/partnerLevels" className="text-teal-500 font-bold outline rounded-md p-2">Administrar Cuotas</Link>
                 </div>
             </div>
             <div className="flex w-full justify-center p-12">
