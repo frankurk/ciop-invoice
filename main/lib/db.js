@@ -3,7 +3,7 @@ const isDev = require("electron-is-dev");
 const Datastore = require("nedb-promises");
 const dbFactory = (fileName) =>
   Datastore.create({
-    filename: `${isDev ? "." : app.getAppPath("userData")}/data/${fileName}`,
+    filename: `${isDev ? "." : app.getPath("userData")}/data/${fileName}`,
     timestampData: true,
     autoload: true,
   });
