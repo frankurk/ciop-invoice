@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useRut } from "react-rut-formatter";
 
 const Partners = () => {
     const [infoState, setInfoState] = useState("hidden");
@@ -18,13 +17,13 @@ const Partners = () => {
     const [selectedCommune, setSelectedCommune] = useState(null);
     const [name, setName] = useState(null);
     const [address, setAddress] = useState(null);
-    const { rut, updateRut, isValid: isRutValid } = useRut();
+    const [rut, setRut] = useState(null);
 
     const cleanState = () => {
         setShowForm(false);
         setName(null);
         setAddress(null);
-        updateRut(null);
+        setRut(null);
         setSelectedLevel(null);
         setSelectedCommune(null);
         setCommunes(null);
@@ -54,7 +53,7 @@ const Partners = () => {
         window.electron.partner.new({
             name,
             address,
-            rut: rut.formatted,
+            rut,
             communeId: selectedCommune,
             levelId: selectedLevel,
         }).then(() => {
@@ -114,10 +113,9 @@ const Partners = () => {
                             </div>
                             <div className="w-full flex flex-row justify-between">
                                 <label className="text-slate-600 w-[22%]">
-                                    RUT:<input onChange={(e) => updateRut(e.target.value)} value={rut.formatted} type="text"
+                                    RUT:<input onChange={(e) => setRut(e.target.value)} value={rut} type="text"
                                         className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2 px-2"
                                     />
-                                    {!!rut.raw && !isRutValid && <span className="text-red-600">RUT inválido</span>}
                                 </label>
                                 <label className="text-slate-600 w-[22%]">
                                     Cuota:<select
@@ -143,9 +141,10 @@ const Partners = () => {
                                     onChange={(e) => setSelectedCommune(e.target.value)}
                                     value={selectedCommune}
                                     className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2">
-                                    {communes ? communes.map((option) => (
+                                    {!communes ? <option value="">Seleccione región</option> : <option value="">Seleccionar...</option>}
+                                    {communes && communes.map((option) => (
                                         <option key={option._id} value={option._id}>{option.name}</option>
-                                    )) : <option value="">Seleccione región</option>}
+                                    ))}
                                 </select>
                                 </label>
                             </div>
@@ -155,7 +154,7 @@ const Partners = () => {
                                 <button onClick={cleanState} className="text-slate-400 mx-4 my-2">
                                     Cancelar
                                 </button>
-                                <button type="submit" disabled={!isRutValid} onClick={addPartner} className="text-teal-500 font-bold outline rounded-lg px-2">
+                                <button type="submit" onClick={addPartner} className="text-teal-500 font-bold outline rounded-lg px-2">
                                     Agregar
                                 </button>
                             </div>
