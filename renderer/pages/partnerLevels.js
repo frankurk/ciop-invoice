@@ -6,6 +6,9 @@ import Link from "next/link";
 const clLocale = Intl.NumberFormat("es-CL");
 
 const PartnerLevels = () => {
+    const [infoState, setInfoState] = useState("hidden");
+    const [message, setMessage] = useState(null);
+
     const [showForm, setShowForm] = useState(false);
 
     const [levels, setLevels] = useState(null);
@@ -19,13 +22,25 @@ const PartnerLevels = () => {
         setPrice(null);
     };
 
-    const addPartnerLevel = () => {
+    const handleError = (error) => {
+        setMessage(error.message.split('Error: ')[1]);
+        setInfoState("inline-block");
+        setTimeout(() => {
+            setInfoState("hidden");
+        }, 2000);
+    };
+
+    const addPartnerLevel = (e) => {
+        e.preventDefault();
+
         window.electron.partnerLevel.new({
             name,
             price: Number.parseFloat(price),
         }).then(() => {
             cleanState();
             refreshLevels();
+        }).catch((error) => {
+            handleError(error);
         });
     };
 
@@ -106,13 +121,25 @@ const PartnerLevels = () => {
                                     if (confirm(`Confirmar eliminación:\n${level.name}`)) {
                                         window.electron.partnerLevel.delete(level._id).then(() => {
                                             setLevels(levels.filter(lvl => lvl._id !== level._id))
-                                        })
+                                        }).catch((error) => {
+                                            handleError(error);
+                                        });
                                     }
                                 }}><Image src="/trash.svg" width="20" height="20" alt="eliminar" /></button></td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+            </div>
+            <div
+                className={`fixed right-10 bottom-10 z-50 ${infoState} border-r-8 border-red-600 bg-white px-5 py-4 drop-shadow-lg`}
+            >
+                <p className="text-sm">
+                <span className="mr-2 inline-block rounded-full bg-red-600 px-3 py-1 font-extrabold text-white">
+                    !
+                </span>
+                {message}
+                </p>
             </div>
         </>
     )

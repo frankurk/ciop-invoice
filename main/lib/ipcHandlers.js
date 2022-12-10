@@ -34,6 +34,10 @@ ipcMain.handle("get-partner-levels", async () => {
 });
 
 ipcMain.handle("new-partner-level", async (_event, payload) => {
+  if (!payload.name || !payload.price) {
+    throw new Error("Campos nombre y precio son obligatorios!");
+  }
+
   const partnerLevel = await db.partnerLevel.insertOne({
     name: payload.name,
     price: payload.price,
@@ -42,10 +46,25 @@ ipcMain.handle("new-partner-level", async (_event, payload) => {
 });
 
 ipcMain.handle("delete-partner-level", async (_event, levelId) => {
+  const partner = await db.partner.findOne({ levelId });
+  if (partner) {
+    throw new Error("No se puede eliminar una cuota que está siendo usada por socios!");
+  }
+
   await db.partnerLevel.deleteOne({ _id: levelId });
 });
 
 ipcMain.handle("new-partner", async (_event, payload) => {
+  if (
+    !payload.name ||
+    !payload.rut ||
+    !payload.address ||
+    !payload.communeId ||
+    !payload.levelId
+  ) {
+    throw new Error("Campos nombre, RUT, dirección, comuna y cuota son obligatorios!");
+  }
+
   const partner = await db.partner.insertOne({
     name: payload.name,
     rut: payload.rut,
@@ -65,14 +84,22 @@ ipcMain.handle("get-correlative", async () => {
   return lastInvoiceNumber?.targetNumber || 1;
 });
 
-ipcMain.handle("set-correlative", async (_event, message) => {
+ipcMain.handle("set-correlative", async (_event, targetNumber) => {
+  if (!targetNumber) {
+    throw new Error("Falta correlativo!");
+  }
+
   await db.invoiceGeneration.deleteMany();
   await db.invoiceGeneration.insertOne({
-    targetNumber: Number.parseInt(message, 10),
+    targetNumber: Number.parseInt(targetNumber, 10),
   });
 });
 
 ipcMain.handle("generate-invoice", async (_event, payload) => {
+  if (!payload.partnerId) {
+    throw new Error("Falta socio!");
+  }
+
   const { partnerId, previousBalance = 0 } = payload;
   const invoice = await invoiceHandler.generateInvoice({
     partnerId,
@@ -84,7 +111,8 @@ ipcMain.handle("generate-invoice", async (_event, payload) => {
 
 ipcMain.handle("get-uf-price", async () => {
   const today = new Date();
-  const date = "01-" + `0${today.getMonth() + 1}`.slice(-2) + "-" + today.getFullYear();
+  const date =
+    "01-" + `0${today.getMonth() + 1}`.slice(-2) + "-" + today.getFullYear();
   const price = await getUf(date);
   return { date, price };
 });

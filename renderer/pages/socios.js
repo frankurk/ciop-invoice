@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRut } from "react-rut-formatter";
 
 const Partners = () => {
+    const [infoState, setInfoState] = useState("hidden");
+    const [message, setMessage] = useState(null);
     const [showForm, setShowForm] = useState(false);
 
     const [partners, setPartners] = useState(null);
@@ -28,6 +30,14 @@ const Partners = () => {
         setCommunes(null);
     };
 
+    const handleError = (error) => {
+        setMessage(error.message.split('Error: ')[1]);
+        setInfoState("inline-block");
+        setTimeout(() => {
+            setInfoState("hidden");
+        }, 2000);
+    };
+
     const getLocationData = (regionId) => {
         window.electron.general.getLocationData(regionId).then((data) => {
             if (regionId) {
@@ -38,7 +48,9 @@ const Partners = () => {
         });
     };
 
-    const addPartner = () => {
+    const addPartner = (e) => {
+        e.preventDefault();
+
         window.electron.partner.new({
             name,
             address,
@@ -47,6 +59,8 @@ const Partners = () => {
             levelId: selectedLevel,
         }).then(() => {
             cleanState();
+        }).catch((error) => {
+            handleError(error);
         });
     };
 
@@ -183,6 +197,16 @@ const Partners = () => {
                         ))}
                     </tbody>
                 </table>
+            </div>
+            <div
+                className={`fixed right-10 bottom-10 z-50 ${infoState} border-r-8 border-red-600 bg-white px-5 py-4 drop-shadow-lg`}
+            >
+                <p className="text-sm">
+                <span className="mr-2 inline-block rounded-full bg-red-600 px-3 py-1 font-extrabold text-white">
+                    !
+                </span>
+                {message}
+                </p>
             </div>
         </>
     )
