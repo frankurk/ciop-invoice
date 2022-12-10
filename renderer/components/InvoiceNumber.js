@@ -65,7 +65,7 @@ const InvoiceNumber = ({ refresh }) => {
             <button onClick={closeModal} className="text-slate-400 m-4">
               Cancelar
             </button>
-            <button type="submit" className="text-teal-500 font-bold">
+            <button type="submit" disabled={!newInvoiceNumber} className="text-teal-500 font-bold">
               OK
             </button>
           </div>

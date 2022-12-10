@@ -27,7 +27,7 @@ const PartnerLevels = () => {
         setInfoState("inline-block");
         setTimeout(() => {
             setInfoState("hidden");
-        }, 2000);
+        }, 3000);
     };
 
     const addPartnerLevel = (e) => {

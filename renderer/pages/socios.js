@@ -35,7 +35,7 @@ const Partners = () => {
         setInfoState("inline-block");
         setTimeout(() => {
             setInfoState("hidden");
-        }, 2000);
+        }, 3000);
     };
 
     const getLocationData = (regionId) => {
