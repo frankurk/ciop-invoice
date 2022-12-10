@@ -6,10 +6,6 @@ const { getUf } = require("./uf");
 
 const clLocale = Intl.NumberFormat("es-CL");
 
-function pad(n) {
-  return n.toString().padStart(2, "0");
-}
-
 function upperCaseFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -33,15 +29,11 @@ class InvoiceHandler {
       : 1;
     const address = `${partner.address}, ${commune.name}`;
 
-    const DATE = new Date();
-    const DAY = DATE.getDate();
-    const MONTH = DATE.getMonth() + 1;
-    const YEAR = DATE.getFullYear();
-    const FIRST_DAY_OF_MONTH = `01-${pad(MONTH)}-${YEAR}`;
-    const FULL_DATE = `${pad(DAY)}-${pad(MONTH)}-${YEAR}`;
-    const ufValue = await getUf(FIRST_DAY_OF_MONTH);
+    const currentDate = new Date();
+    const firstDayOfMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const ufValue = await getUf(firstDayOfMonthDate);
     const currentMonthCostClp = Math.round(
-      partnerLevel.price * ufValue
+      partnerLevel.price * ufValue.price
     );
     const totalToPay = Math.round(currentMonthCostClp + previousBalance);
 
@@ -57,16 +49,16 @@ class InvoiceHandler {
       },
       invoice: {
         number: correlative,
-        date: FULL_DATE,
-        firstDayOfMonth: FIRST_DAY_OF_MONTH,
+        date: currentDate.toLocaleDateString('es-CL'),
+        firstDayOfMonth: ufValue.date.toLocaleDateString('es-CL'),
         details: [
           {
             mainText: "Cuota",
             description: `${upperCaseFirstLetter(
-              DATE.toLocaleString("es-CL", {
+              currentDate.toLocaleString("es-CL", {
                 month: "long",
               })
-            )} ${YEAR}`,
+            )} ${currentDate.getFullYear()}`,
             amountInUf: clLocale.format(partnerLevel.price),
             amountInClp: clLocale.format(currentMonthCostClp),
           },
@@ -74,11 +66,11 @@ class InvoiceHandler {
         subtotal: clLocale.format(currentMonthCostClp),
         previousBalance: clLocale.format(previousBalance),
         totalToPay: clLocale.format(totalToPay),
-        writtenMonth: DATE.toLocaleString("es-CL", {
+        writtenMonth: currentDate.toLocaleString("es-CL", {
           month: "long",
         }),
-        year: YEAR,
-        ufValue: clLocale.format(ufValue),
+        year: currentDate.getFullYear(),
+        ufValue: clLocale.format(ufValue.price),
       },
     };
 

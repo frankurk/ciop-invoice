@@ -2,7 +2,7 @@ const { ipcMain } = require("electron");
 
 const invoiceHandler = require("./invoice");
 const db = require("./db");
-const { getUf } = require("./uf");
+const { getUf, overrideSessionUf } = require("./uf");
 
 ipcMain.handle("get-partners", async () => {
   const partners = await db.partner.find().sort({ createdAt: 1 });
@@ -111,8 +111,15 @@ ipcMain.handle("generate-invoice", async (_event, payload) => {
 
 ipcMain.handle("get-uf-price", async () => {
   const today = new Date();
-  const date =
-    "01-" + `0${today.getMonth() + 1}`.slice(-2) + "-" + today.getFullYear();
-  const price = await getUf(date);
-  return { date, price };
+  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const uf = await getUf(firstDayOfMonth);
+  return uf;
+});
+
+ipcMain.handle("override-uf-price", async (_event, payload) => {
+  if (!payload.date || !payload.price) {
+    throw new Error("Falta fecha o precio!");
+  }
+
+  overrideSessionUf(payload.date, payload.price);
 });

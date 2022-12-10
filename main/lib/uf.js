@@ -1,22 +1,46 @@
 const axios = require("axios");
 
+function pad(n) {
+  return n.toString().padStart(2, "0");
+}
+
 class UFHandler {
   constructor() {
     this.ufValues = {};
+    this.overrideSession = null;
   }
 
+  overrideSessionUf = (date, price) => {
+    this.overrideSession = { date, price };
+  };
+
+  /**
+   * 
+   * @param {Date} date 
+   * @returns {Promise<{date: Date, price: number}>}
+   */
   getUf = async (date) => {
+    if (this.overrideSession) return this.overrideSession;
     if (this.ufValues[date]) return this.ufValues[date];
 
-    const { data } = await axios.get(`https://mindicador.cl/api/uf/${date}`);
-    this.ufValues[date] = data.serie[0].valor;
+    const { data } = await axios.get(`https://mindicador.cl/api/uf/${date.toLocaleDateString('es-CL')}`);
+    this.ufValues[date] = { date, price: data.serie[0].valor };
     return this.ufValues[date];
   };
 
-  getUfCMF = async (year, month, day) => {
-    if (this.ufValues[`${year}-${month}-${day}`]) return this.ufValues[`${year}-${month}-${day}`];
+  /**
+   * 
+   * @param {Date} date 
+   * @returns {Promise<{date: Date, price: number}>}
+   */
+  getUfCMF = async (date) => {
+    if (this.overrideSession) return this.overrideSession;
+    if (this.ufValues[date]) return this.ufValues[date];
 
     const key = process.env.CMFCHILE_KEY || "null";
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
     const url = `https://api.cmfchile.cl/api-sbifv3/recursos_api/uf/${pad(
       year
     )}/${pad(month)}/dias/${pad(day)}?apikey=${key}&formato=json`;
@@ -26,8 +50,8 @@ class UFHandler {
       ",",
       "."
     );
-    this.ufValues[`${year}-${month}-${day}`] = Number.parseFloat(standardizedValue);
-    return this.ufValues[`${year}-${month}-${day}`];
+    this.ufValues[date] = { date, price: Number.parseFloat(standardizedValue) };
+    return this.ufValues[date];
   };
 }
 

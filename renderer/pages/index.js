@@ -66,7 +66,7 @@ const Home = () => {
             <div className="w-full flex flex-row justify-between px-12 h-10 items-center">
                 <InvoiceNumber refresh={refresh} />
                 {ufPrice && (
-                <p className="text-sm text-slate-600 mb-2">Valor de UF el {ufPrice.date}: ${clLocale.format(ufPrice.price)}</p>
+                <p className="text-sm text-slate-600 mb-2">Valor de UF el {ufPrice.date.toLocaleDateString('es-CL')}: ${clLocale.format(ufPrice.price)}</p>
                 )}
                 <Link href="/socios" className="text-teal-500 font-bold outline rounded-md p-2">Administrar Socios</Link>
                 <Link href="/partnerLevels" className="text-teal-500 font-bold outline rounded-md p-2">Administrar Cuotas</Link>

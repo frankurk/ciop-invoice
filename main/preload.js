@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld("electron", {
     getLocationData: (regionId) =>
       ipcRenderer.invoke("get-location-data", regionId),
     getUfPrice: () => ipcRenderer.invoke("get-uf-price"),
+    overrideUfPrice: (date, price) => ipcRenderer.invoke("override-uf-price", { date, price }),
   },
   partner: {
     getAll: () => ipcRenderer.invoke("get-partners"),
