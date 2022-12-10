@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import BackIcon from "../public/back.svg";
+import EditIcon from "../public/edit.svg";
+import TrashIcon from "../public/trash.svg";
 
 const clLocale = Intl.NumberFormat("es-CL");
 
@@ -69,7 +72,7 @@ const PartnerLevels = () => {
                 <title>Administrar cuotas</title>
             </Head>
             <div className="w-full px-10 mt-6">
-                <Link href="/generateInvoice" className="text-lg text-teal-500 font-bold"><Image src="/back.svg" alt="volver" width="35" height="35"></Image></Link>
+            <Link href="/generateInvoice" className="text-lg text-teal-500 font-bold"><Image src={BackIcon} alt="volver" width="35" height="35"></Image></Link>
                 <div className="flex justify-center">
                     {showForm ? <div className="flex flex-col justify-center">
                         <form className="w-[850px] my-5 p-5 rounded-lg border border-gray-500 self-center">
@@ -116,7 +119,7 @@ const PartnerLevels = () => {
                             <tr key={level._id}>
                                 <td className="border-b border-gray-200">{level.name}</td>
                                 <td className="border-b border-gray-200">{clLocale.format(level.price)}</td>
-                                <td className="border-b border-gray-200"><button><Image src="/edit.svg" width="20" height="20" alt="editar" className="mx-4" /></button></td>
+                                <td className="border-b border-gray-200"><button><Image src={EditIcon} width="20" height="20" alt="editar" className="mx-4" /></button></td>
                                 <td className="border-b border-gray-200"><button onClick={() => {
                                     if (confirm(`Confirmar eliminación:\n${level.name}`)) {
                                         window.electron.partnerLevel.delete(level._id).then(() => {
@@ -125,7 +128,7 @@ const PartnerLevels = () => {
                                             handleError(error);
                                         });
                                     }
-                                }}><Image src="/trash.svg" width="20" height="20" alt="eliminar" /></button></td>
+                                }}><Image src={TrashIcon} width="20" height="20" alt="eliminar" /></button></td>
                             </tr>
                         ))}
                     </tbody>

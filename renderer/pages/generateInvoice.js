@@ -4,6 +4,7 @@ import Image from "next/image";
 import InvoiceNumber from "../components/InvoiceNumber";
 import Modal from 'react-modal';
 import Link from "next/link";
+import DownloadIcon from "../public/download.svg";
 Modal.setAppElement("#__next");
 
 const clLocale = Intl.NumberFormat("es-CL");
@@ -98,7 +99,7 @@ const GenerateInvoice = () => {
                                 <td className="border-b border-gray-200"><button onClick={() => {
                                     setCurrentPartnerInvoice(partner._id);
                                     openModal();
-                                }} ><Image src="/download.svg" width="20" height="20" alt="descargar" /></button></td>
+                                }} ><Image src={DownloadIcon} width="20" height="20" alt="descargar" /></button></td>
                             </tr>
                         ))}
                     </tbody>

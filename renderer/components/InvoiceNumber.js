@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import Modal from "react-modal";
 import Image from "next/image";
+import EditIcon from "../public/edit.svg";
+
 Modal.setAppElement("#__next");
 
 const InvoiceNumber = ({ refresh }) => {
@@ -40,7 +42,7 @@ const InvoiceNumber = ({ refresh }) => {
         <p className="text-lg text-slate-600 mr-2 font-bold">Próximo correlativo:</p>
         <p className="text-lg text-teal-500 font-bold mr-2">{invoiceNumber}</p>
         <button onClick={openModal}>
-          <Image src="/edit.svg" width="20" height="20" alt="editar" className="mx-4" />
+          <Image src={EditIcon} width="20" height="20" alt="editar" className="mx-4" />
         </button>
       </div>
       <Modal
