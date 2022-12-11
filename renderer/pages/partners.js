@@ -254,26 +254,26 @@ const Partners = () => {
                         <p className="text-lg text-teal-500 font-bold text-center mb-6">Editar Información Socio</p>
                         <div className="w-full flex flex-row justify-between">
                             <label className="text-slate-600 w-[48%]">
-                                Nombre:<input onChange={(e) => setName(e.target.value)} value={selectedPartner?.name || ""} type="text"
+                                Nombre:<input onChange={(e) => setName(e.target.value)} defaultValue={selectedPartner?.name || ""} type="text"
                                     className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2 px-2"
                                 />
                             </label>
                             <label className="text-slate-600 w-[48%]">
-                                Dirección:<input onChange={(e) => setAddress(e.target.value)} value={selectedPartner?.address || ""} type="text"
+                                Dirección:<input onChange={(e) => setAddress(e.target.value)} defaultValue={selectedPartner?.address || ""} type="text"
                                     className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2 px-2"
                                 />
                             </label>
                         </div>
                         <div className="w-full flex flex-row justify-between">
                             <label className="text-slate-600 w-[22%]">
-                                RUT:<input onChange={(e) => setRut(e.target.value)} value={selectedPartner?.rut || ""} type="text"
+                                RUT:<input onChange={(e) => setRut(e.target.value)} defaultValue={selectedPartner?.rut || ""} type="text"
                                     className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2 px-2"
                                 />
                             </label>
                             <label className="text-slate-600 w-[22%]">
                                 Cuota:<select
                                     onChange={(e) => setSelectedLevel(e.target.value)}
-                                    value={selectedLevel}
+                                    defaultValue={selectedLevel}
                                     className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2">
                                     <option value="">Seleccionar...</option>
                                     {levels && levels.map((option) => (
@@ -292,7 +292,7 @@ const Partners = () => {
                             </label>
                             <label className="text-slate-600 w-[22%]">Comuna:<select
                                 onChange={(e) => setSelectedCommune(e.target.value)}
-                                value={selectedCommune}
+                                defaultValue={selectedCommune}
                                 className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2">
                                 {!communes ? <option value="">Seleccione región</option> : <option value="">Seleccionar...</option>}
                                 {communes && communes.map((option) => (

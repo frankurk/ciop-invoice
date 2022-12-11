@@ -96,7 +96,7 @@ const PartnerLevels = () => {
         }).catch((error) => {
             handleError(error);
         });
-      }
+    }
 
     return (
         <>
@@ -104,7 +104,7 @@ const PartnerLevels = () => {
                 <title>Administrar cuotas</title>
             </Head>
             <div className="w-full px-10 mt-6">
-            <Link href="/generateInvoice" className="text-lg text-teal-500 font-bold"><Image src={BackIcon} alt="volver" width="35" height="35"></Image></Link>
+                <Link href="/generateInvoice" className="text-lg text-teal-500 font-bold"><Image src={BackIcon} alt="volver" width="35" height="35"></Image></Link>
                 <div className="flex justify-center">
                     {showForm ? <div className="flex flex-col justify-center">
                         <form className="w-[850px] my-5 p-5 rounded-lg border border-gray-500 self-center">
@@ -151,7 +151,7 @@ const PartnerLevels = () => {
                             <tr key={level._id}>
                                 <td className="border-b border-gray-200">{level.name}</td>
                                 <td className="border-b border-gray-200">{clLocale.format(level.price)}</td>
-                                <td className="border-b border-gray-200"><button><Image src={EditIcon} width="20" height="20" alt="editar" className="mx-4" onClick={() => handleEditButton(level)}/></button></td>
+                                <td className="border-b border-gray-200"><button><Image src={EditIcon} width="20" height="20" alt="editar" className="mx-4" onClick={() => handleEditButton(level)} /></button></td>
                                 <td className="border-b border-gray-200"><button onClick={() => {
                                     if (confirm(`Confirmar eliminación:\n${level.name}`)) {
                                         window.electron.partnerLevel.delete(level._id).then(() => {
@@ -184,17 +184,17 @@ const PartnerLevels = () => {
                 style={{ overlay: { backgroundColor: "rgba(9, 9, 14, 0.6)" } }}
             >
                 <div className="flex flex-col justify-center">
-                <div className="flex flex-col justify-center">
+                    <div className="flex flex-col justify-center">
                         <form onSubmit={handleEdit} className="w-[450px] my-5 p-7 rounded-lg self-center">
                             <p className="text-lg text-teal-500 font-bold text-center mb-6">Editar Cuota</p>
                             <div className="w-full flex flex-row justify-between">
                                 <label className="text-slate-600 w-[48%]">
-                                    Nombre:<input onChange={(e) => setName(e.target.value)} value={selectedLevel?.name || ""} type="text"
+                                    Nombre:<input onChange={(e) => setName(e.target.value)} defaultValue={selectedLevel?.name || ""} type="text"
                                         className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2 px-2"
                                     />
                                 </label>
                                 <label className="text-slate-600 w-[48%]">
-                                    Precio:<input onChange={(e) => setPrice(e.target.value)} value={selectedLevel?.price || ""} type="number"
+                                    Precio:<input onChange={(e) => setPrice(e.target.value)} defaultValue={selectedLevel?.price || ""} type="number"
                                         className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2 px-2"
                                     />
                                 </label>
@@ -212,7 +212,7 @@ const PartnerLevels = () => {
                         </form>
                         <div></div>
                     </div>
-                    </div> 
+                </div>
             </Modal>
         </>
     )
