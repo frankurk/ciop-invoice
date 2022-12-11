@@ -5,6 +5,8 @@ import Link from "next/link";
 import BackIcon from "../public/back.svg";
 import EditIcon from "../public/edit.svg";
 import TrashIcon from "../public/trash.svg";
+import Modal from 'react-modal';
+Modal.setAppElement("#__next");
 
 const clLocale = Intl.NumberFormat("es-CL");
 
@@ -18,6 +20,9 @@ const PartnerLevels = () => {
 
     const [name, setName] = useState(null);
     const [price, setPrice] = useState(null);
+
+    const [modalIsOpen, setIsOpen] = useState(false);
+    const [selectedLevel, setSelectedLevel] = useState(null);
 
     const cleanState = () => {
         setShowForm(false);
@@ -65,6 +70,23 @@ const PartnerLevels = () => {
             <p className="text-lg text-teal-500 font-bold text-center">Agregar Cuota</p>
         </div>
     );
+
+    const handleEditButton = (level) => {
+        setSelectedLevel(level);
+        openModal();
+    }
+
+    const openModal = () => {
+        setIsOpen(true);
+    }
+
+    const closeModal = () => {
+        setIsOpen(false);
+    }
+
+    const handleEdit = (e) => {
+        //
+      }
 
     return (
         <>
@@ -119,7 +141,7 @@ const PartnerLevels = () => {
                             <tr key={level._id}>
                                 <td className="border-b border-gray-200">{level.name}</td>
                                 <td className="border-b border-gray-200">{clLocale.format(level.price)}</td>
-                                <td className="border-b border-gray-200"><button><Image src={EditIcon} width="20" height="20" alt="editar" className="mx-4" /></button></td>
+                                <td className="border-b border-gray-200"><button><Image src={EditIcon} width="20" height="20" alt="editar" className="mx-4" onClick={() => handleEditButton(level)}/></button></td>
                                 <td className="border-b border-gray-200"><button onClick={() => {
                                     if (confirm(`Confirmar eliminación:\n${level.name}`)) {
                                         window.electron.partnerLevel.delete(level._id).then(() => {
@@ -144,6 +166,44 @@ const PartnerLevels = () => {
                     {message}
                 </p>
             </div>
+            <Modal
+                className="absolute rounded-lg after:bg-gray-700 ml-[30%] mt-36 z-50 bg-zinc-100"
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                contentLabel="Edit Level Modal"
+                style={{ overlay: { backgroundColor: "rgba(9, 9, 14, 0.6)" } }}
+            >
+                <div className="flex flex-col justify-center">
+                <div className="flex flex-col justify-center">
+                        <form className="w-[450px] my-5 p-7 rounded-lg self-center">
+                            <p className="text-lg text-teal-500 font-bold text-center mb-6">Editar Cuota</p>
+                            <div className="w-full flex flex-row justify-between">
+                                <label className="text-slate-600 w-[48%]">
+                                    Nombre:<input onChange={(e) => setName(e.target.value)} value={selectedLevel?.name || ""} type="text"
+                                        className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2 px-2"
+                                    />
+                                </label>
+                                <label className="text-slate-600 w-[48%]">
+                                    Precio:<input onChange={(e) => setPrice(e.target.value)} value={selectedLevel?.price || ""} type="number"
+                                        className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2 px-2"
+                                    />
+                                </label>
+                            </div>
+                            <div className="w-full flex flex-row justify-between">
+                            </div>
+                            <div className="flex flex-row justify-end mt-4">
+                                <button onClick={closeModal} className="text-slate-400 mx-4 my-2">
+                                    Cancelar
+                                </button>
+                                <button type="submit" className="text-teal-500 font-bold outline rounded-lg px-2">
+                                    Confirmar
+                                </button>
+                            </div>
+                        </form>
+                        <div></div>
+                    </div>
+                    </div> 
+            </Modal>
         </>
     )
 }
