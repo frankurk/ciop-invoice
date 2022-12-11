@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import Footer from "../components/Footer";
 import BackIcon from "../public/back.svg";
 import EditIcon from "../public/edit.svg";
 import TrashIcon from "../public/trash.svg";
@@ -138,7 +139,7 @@ const PartnerLevels = () => {
                     </div> : closedNewPartnerForm}
                 </div>
             </div>
-            <div className="flex w-full justify-center p-12 pt-0">
+            <div className="flex w-full justify-center px-12 pt-0">
                 <table className="w-full border-separate border-spacing-y-8">
                     <thead>
                         <tr className="text-left text-slate-600 border-b border-gray-200">
@@ -178,6 +179,7 @@ const PartnerLevels = () => {
                     {message}
                 </p>
             </div>
+            <Footer />
             <Modal
                 className="absolute rounded-lg after:bg-gray-700 ml-[30%] mt-36 z-50 bg-zinc-100"
                 isOpen={modalIsOpen}

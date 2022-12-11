@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import InvoiceNumber from "../components/InvoiceNumber";
+import Footer from "../components/Footer";
 import Modal from 'react-modal';
 import Link from "next/link";
 import DownloadIcon from "../public/download.svg";
@@ -66,7 +67,7 @@ const GenerateInvoice = () => {
                     Generar Invoice
                 </p>
                 {ufPrice && (
-                    <p className="text-sm text-slate-600 mb-2">Valor de UF el {ufPrice.date.toLocaleDateString('es-CL')}: ${clLocale.format(ufPrice.price)}</p>
+                    <p className="text-sm text-slate-500 mb-2">Valor de UF el {ufPrice.date.toLocaleDateString('es-CL')}: ${clLocale.format(ufPrice.price)}</p>
                 )}
             </div>
             <div className="w-full flex flex-row justify-between px-12 h-10 items-center">
@@ -76,7 +77,7 @@ const GenerateInvoice = () => {
                     <Link href="/partnerLevels" className="text-teal-500 font-bold outline rounded-md p-2">Administrar Cuotas</Link>
                 </div>
             </div>
-            <div className="flex w-full justify-center p-12">
+            <div className="flex w-full justify-center px-12">
                 <table className="w-full border-separate border-spacing-y-8">
                     <thead>
                         <tr className="text-left text-slate-600 border-b border-gray-200">
@@ -105,6 +106,7 @@ const GenerateInvoice = () => {
                     </tbody>
                 </table>
             </div>
+            <Footer />
             <Modal
                 className="absolute w-2/5 p-8 rounded-lg after:bg-gray-700 ml-[30%] mt-36 z-50 bg-white border"
                 isOpen={modalIsOpen}
