@@ -35,7 +35,6 @@ const Partners = () => {
         setSelectedLevel(null);
         setSelectedCommune(null);
         setCommunes(null);
-        closeModal();
     };
 
     const handleError = (error) => {
@@ -103,6 +102,7 @@ const Partners = () => {
 
     const handleEditButton = (partner) => {
         setSelectedPartner(partner);
+        regionChange({ target: { value: partner.commune.regionId } });
         openModal();
     }
 
@@ -111,6 +111,7 @@ const Partners = () => {
     }
 
     const closeModal = () => {
+        cleanState();
         setIsOpen(false);
     }
 
@@ -124,6 +125,7 @@ const Partners = () => {
             levelId: selectedLevel || selectedPartner.levelId,
         }).then(() => {
             cleanState();
+            closeModal();
             fetchPartners();
         }).catch((error) => {
             handleError(error);
@@ -302,7 +304,7 @@ const Partners = () => {
                                 className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2">
                                 {!communes ? <option value="">Seleccione región</option> : <option value="">Seleccionar...</option>}
                                 {communes && communes.map((option) => (
-                                    <option key={option._id} value={option._id}>{option.name}</option>
+                                    <option key={option._id} value={option._id} selected={option._id === selectedPartner?.communeId}>{option.name}</option>
                                 ))}
                             </select>
                             </label>

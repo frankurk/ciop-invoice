@@ -28,7 +28,6 @@ const PartnerLevels = () => {
         setShowForm(false);
         setName(null);
         setPrice(null);
-        closeModal();
     };
 
     const handleError = (error) => {
@@ -82,6 +81,7 @@ const PartnerLevels = () => {
     }
 
     const closeModal = () => {
+        cleanState();
         setIsOpen(false);
     }
 
@@ -93,6 +93,7 @@ const PartnerLevels = () => {
             price: price ? Number.parseFloat(price) : selectedLevel.price,
         }).then(() => {
             cleanState();
+            closeModal();
             refreshLevels();
         }).catch((error) => {
             handleError(error);
