@@ -35,6 +35,7 @@ const Partners = () => {
         setSelectedLevel(null);
         setSelectedCommune(null);
         setCommunes(null);
+        closeModal();
     };
 
     const handleError = (error) => {
@@ -77,14 +78,18 @@ const Partners = () => {
         getLocationData(e.target.value);
     };
 
+    const fetchPartners = () => {
+        window.electron.partner.getAll().then((partners) => {
+            setPartners(partners);
+        });
+    };
+
     useEffect(() => {
         getLocationData();
         window.electron.partnerLevel.getAll().then((levels) => {
             setLevels(levels);
         });
-        window.electron.partner.getAll().then((partners) => {
-            setPartners(partners);
-        });
+        fetchPartners();
     }, []);
 
     const closedNewPartnerForm = (
@@ -112,13 +117,14 @@ const Partners = () => {
     const handleEdit = (e) => {
         e.preventDefault();
         window.electron.partner.update(selectedPartner._id, {
-            name: selectedPartner.name,
-            address: selectedPartner.address,
-            rut: selectedPartner.rut,
-            communeId: selectedPartner.communeId,
-            levelId: selectedPartner.levelId,
+            name: name || selectedPartner.name,
+            address: address || selectedPartner.address,
+            rut: rut || selectedPartner.rut,
+            communeId: selectedCommune || selectedPartner.communeId,
+            levelId: selectedLevel || selectedPartner.levelId,
         }).then(() => {
             cleanState();
+            fetchPartners();
         }).catch((error) => {
             handleError(error);
         });

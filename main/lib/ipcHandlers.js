@@ -45,27 +45,24 @@ ipcMain.handle("new-partner-level", async (_event, payload) => {
   return partnerLevel;
 });
 
-ipcMain.handle(
-  "update-partner-level",
-  async (_event, { levelId, ...payload }) => {
-    if (!levelId) {
-      throw new Error("Falta cuota!");
-    }
-    if (!payload.name || !payload.price) {
-      throw new Error("Campos nombre y precio son obligatorios!");
-    }
-
-    await db.partnerLevel.updateOne(
-      {
-        _id: levelId,
-      },
-      {
-        name: payload.name,
-        price: payload.price,
-      }
-    );
+ipcMain.handle("update-partner-level", async (_event, { levelId, payload }) => {
+  if (!levelId) {
+    throw new Error("Falta cuota!");
   }
-);
+  if (!payload.name || !payload.price) {
+    throw new Error("Campos nombre y precio son obligatorios!");
+  }
+
+  await db.partnerLevel.updateOne(
+    {
+      _id: levelId,
+    },
+    {
+      name: payload.name,
+      price: payload.price,
+    }
+  );
+});
 
 ipcMain.handle("delete-partner-level", async (_event, levelId) => {
   const partner = await db.partner.findOne({ levelId });
@@ -101,7 +98,7 @@ ipcMain.handle("new-partner", async (_event, payload) => {
   return partner;
 });
 
-ipcMain.handle("update-partner", async (_event, { partnerId, ...payload }) => {
+ipcMain.handle("update-partner", async (_event, { partnerId, payload }) => {
   if (!partnerId) {
     throw new Error("Falta socio!");
   }

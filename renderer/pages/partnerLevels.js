@@ -28,6 +28,7 @@ const PartnerLevels = () => {
         setShowForm(false);
         setName(null);
         setPrice(null);
+        closeModal();
     };
 
     const handleError = (error) => {
@@ -88,8 +89,8 @@ const PartnerLevels = () => {
         e.preventDefault();
 
         window.electron.partnerLevel.update(selectedLevel._id, {
-            name,
-            price: Number.parseFloat(price),
+            name: name || selectedLevel.name,
+            price: price ? Number.parseFloat(price) : selectedLevel.price,
         }).then(() => {
             cleanState();
             refreshLevels();
@@ -116,7 +117,7 @@ const PartnerLevels = () => {
                                     />
                                 </label>
                                 <label className="text-slate-600 w-[48%]">
-                                    Precio:<input onChange={(e) => setPrice(e.target.value)} value={price} type="number"
+                                    Precio:<input onChange={(e) => setPrice(e.target.value)} value={price} type="number" step="0.01"
                                         className="border bg-transparent w-full outline-slate-600 text-slate-600 my-2 px-2"
                                     />
                                 </label>

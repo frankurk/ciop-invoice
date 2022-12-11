@@ -17,7 +17,6 @@ const sanitizeFilename = (filename) => {
 class InvoiceHandler {
   async generateInvoice({ partnerId, previousBalance = 0 }) {
     const partner = await db.partner.findOne({ _id: partnerId });
-    console.log(partner);
     const partnerLevel = await db.partnerLevel.findOne({ _id: partner.levelId });
     const commune = await db.commune.findOne({ _id: partner.communeId });
     const region = await db.region.findOne({ _id: commune.regionId });
