@@ -85,7 +85,17 @@ const PartnerLevels = () => {
     }
 
     const handleEdit = (e) => {
-        //
+        e.preventDefault();
+
+        window.electron.partnerLevel.update(selectedLevel._id, {
+            name,
+            price: Number.parseFloat(price),
+        }).then(() => {
+            cleanState();
+            refreshLevels();
+        }).catch((error) => {
+            handleError(error);
+        });
       }
 
     return (
@@ -175,7 +185,7 @@ const PartnerLevels = () => {
             >
                 <div className="flex flex-col justify-center">
                 <div className="flex flex-col justify-center">
-                        <form className="w-[450px] my-5 p-7 rounded-lg self-center">
+                        <form onSubmit={handleEdit} className="w-[450px] my-5 p-7 rounded-lg self-center">
                             <p className="text-lg text-teal-500 font-bold text-center mb-6">Editar Cuota</p>
                             <div className="w-full flex flex-row justify-between">
                                 <label className="text-slate-600 w-[48%]">

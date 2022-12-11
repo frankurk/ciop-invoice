@@ -45,10 +45,34 @@ ipcMain.handle("new-partner-level", async (_event, payload) => {
   return partnerLevel;
 });
 
+ipcMain.handle(
+  "update-partner-level",
+  async (_event, { levelId, ...payload }) => {
+    if (!levelId) {
+      throw new Error("Falta cuota!");
+    }
+    if (!payload.name || !payload.price) {
+      throw new Error("Campos nombre y precio son obligatorios!");
+    }
+
+    await db.partnerLevel.updateOne(
+      {
+        _id: levelId,
+      },
+      {
+        name: payload.name,
+        price: payload.price,
+      }
+    );
+  }
+);
+
 ipcMain.handle("delete-partner-level", async (_event, levelId) => {
   const partner = await db.partner.findOne({ levelId });
   if (partner) {
-    throw new Error("No se puede eliminar una cuota que está siendo usada por socios!");
+    throw new Error(
+      "No se puede eliminar una cuota que está siendo usada por socios!"
+    );
   }
 
   await db.partnerLevel.deleteOne({ _id: levelId });
@@ -62,7 +86,9 @@ ipcMain.handle("new-partner", async (_event, payload) => {
     !payload.communeId ||
     !payload.levelId
   ) {
-    throw new Error("Campos nombre, RUT, dirección, comuna y cuota son obligatorios!");
+    throw new Error(
+      "Campos nombre, RUT, dirección, comuna y cuota son obligatorios!"
+    );
   }
 
   const partner = await db.partner.insertOne({
@@ -73,6 +99,34 @@ ipcMain.handle("new-partner", async (_event, payload) => {
     levelId: payload.levelId,
   });
   return partner;
+});
+
+ipcMain.handle("update-partner", async (_event, { partnerId, ...payload }) => {
+  if (!partnerId) {
+    throw new Error("Falta socio!");
+  }
+  if (
+    !payload.name ||
+    !payload.rut ||
+    !payload.address ||
+    !payload.communeId ||
+    !payload.levelId
+  ) {
+    throw new Error(
+      "Campos nombre, RUT, dirección, comuna y cuota son obligatorios!"
+    );
+  }
+
+  await db.partner.updateOne(
+    { _id: partnerId },
+    {
+      name: payload.name,
+      rut: payload.rut,
+      address: payload.address,
+      communeId: payload.communeId,
+      levelId: payload.levelId,
+    }
+  );
 });
 
 ipcMain.handle("delete-partner", async (_event, userId) => {

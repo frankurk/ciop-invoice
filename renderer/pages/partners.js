@@ -110,7 +110,18 @@ const Partners = () => {
     }
 
     const handleEdit = (e) => {
-        //
+        e.preventDefault();
+        window.electron.partner.update(selectedPartner._id, {
+            name: selectedPartner.name,
+            address: selectedPartner.address,
+            rut: selectedPartner.rut,
+            communeId: selectedPartner.communeId,
+            levelId: selectedPartner.levelId,
+        }).then(() => {
+            cleanState();
+        }).catch((error) => {
+            handleError(error);
+        });
     }
 
     return (
