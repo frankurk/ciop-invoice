@@ -14,7 +14,7 @@ jobs:
     name: Build for ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest]
+        os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -25,12 +25,20 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: npm
 
       - name: Install Dependencies
         run: npm ci
 
+      - name: Setup universal build if running on macOS
+        id: setup-universal-build
+        if: matrix.os == 'macos-latest'
+        run: echo "command=--universal" >> $GITHUB_OUTPUT
+
       - name: Build
-        run: npm run build -- --publish never
+        env:
+          RUN_UNIVERSAL_BUILD: ${{ steps.setup-universal-build.outputs.command }}
+        run: npm run build -- --publish never $RUN_UNIVERSAL_BUILD
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
@@ -38,5 +46,5 @@ jobs:
           name: ${{ matrix.os }}
           path: |
             dist/*.exe
-            dist/*.dmg
+            dist/*-universal.dmg
             dist/*.snap
